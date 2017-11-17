@@ -1,0 +1,64 @@
+{
+    "MessageRequest": {
+        "Header": {
+            "HeaderRequest": {
+                "request": {
+                    "serviceId": "SRM",
+                    "consumerId": "BPI",
+                    "moduleId": "modctacte",
+                    "channelCode": "can01",
+                    "messageId": "HACKATON_1234567890",
+                    "timestamp": "2017-10-26T10:51:14.675585",
+                    "countryCode": "PE",
+                    "groupMember": "G0003",
+                    "referenceNumber": "REFNM0001"
+                },
+                "identity": {
+                    "netId": "BI",
+                    "userId": "BPI00",
+                    "supervisorId": "BPI00",
+                    "deviceId": "13.13.13.1",
+                    "serverId": "SERVER01",
+                    "branchCode": "898"
+                }
+            }
+        },
+        "Body": {
+            "aperturaCuenta": {
+                "tipoFuncion": "03",
+                "codigoRed": "BI",
+                "aplicativo": "ST",
+                "banco": "03",
+                "producto": "002",
+                "sProducto": "205",
+                "moneda": "001",
+                "tipoPlazo": "D",
+                "tiempoPlazo": "123",
+                "tasaAnual": "110.87",
+                "funcionario": "S7301",
+                "vendedor": "S7301",
+                "agencia": "123",
+                "conector": "IND",
+                "ubicaTD": "N",
+                "codFondo": "12",
+                "clientes": [{
+                    "cliente": {
+                        "posCliente": "1",
+                        "codigoUnico": "45687",
+                        "nuevaTarjeta": "",
+                        "numeroTarjeta": "03",
+                        "nombreCliente": "JUAN",
+                        "operador": "E",
+                        "celular": "47258935"
+                    }
+                }],
+                "validaTrjDebito": "N",
+                "bloqueoCuenta": "S",
+                "tipoDocumento": "1",
+                "numeroDocumento": "45896589",
+                "tipoPersona": "P",
+                "mail": "EJEMPLO@GMAIL.COM "
+            }
+        }
+    }
+}

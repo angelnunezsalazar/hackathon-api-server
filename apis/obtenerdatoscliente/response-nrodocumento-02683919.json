@@ -1,0 +1,40 @@
+{
+    "MessageResponse": {
+        "Header": {
+            "HeaderResponse": {
+                "response": {
+                    "serviceId": "RNC",
+                    "consumerId": "cons01",
+                    "moduleId": "modctacte",
+                    "channelCode": "can01",
+                    "messageId": "1234567890",
+                    "timestamp": "2017-02-16T16:06:21.499797",
+                    "countryCode": "PE",
+                    "groupMember": "G001",
+                    "referenceNumber": "8079671000"
+                },
+                "status": {
+                    "responseType": "0",
+                    "busResponseCode": "0",
+                    "busResponseMessage": "EJECUCION CON EXITO",
+                    "srvResponseCode": "00",
+                    "srvResponseMessage": "EJECUCION CON EXITO",
+                    "messageIdResBus": "HACKATON_1234567890"
+                }
+            }
+        },
+        "Body": {
+            "obtenerdatoscontactoclienteResponse": {
+                "flagCliente": "S",
+                "codigoUnico": "00000060052370",
+                "apellidoPaterno": "ALVARADO",
+                "apellidoMaterno": "PAYBA",
+                "primerNombre": "GERARDO",
+                "segundoNombre": "ALIPIO",
+                "fechaNacimiento": "1980-04-06",
+                "sexo": "M",
+                "estadoCivil": "U"
+            }
+        }
+    }
+}
