@@ -1,0 +1,20 @@
+[
+    {
+        "codigoUnicoCliente": "48405934",
+        "producto": "002",
+        "sProducto": "205",
+        "moneda": "001",
+        "tasaAnual": "110.87",
+        "saldoDisponible": "+1732.00",
+        "numeroCuenta": "1234567890"
+    },
+    {
+        "codigoUnicoCliente": "48405934",
+        "producto": "002",
+        "sProducto": "205",
+        "moneda": "001",
+        "tasaAnual": "110.87",
+        "saldoDisponible": "+1732.00",
+        "numeroCuenta": "1234567890"
+    }
+]

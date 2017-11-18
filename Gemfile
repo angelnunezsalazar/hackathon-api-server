@@ -2,9 +2,17 @@ source 'http://rubygems.org'
 
 gem 'airborne'
 gem 'sinatra'
-gem 'json'
+gem "sinatra-activerecord"
 gem "sinatra-contrib"
 gem "sinatra-flash"
+gem 'json'
+gem "activerecord"
 gem 'rspec', '3.5.0'
-gem 'selenium-webdriver'
-gem 'chromedriver-helper'
+
+group :development do
+ gem 'sqlite3'
+end
+
+group :production do
+ gem 'pg'
+end

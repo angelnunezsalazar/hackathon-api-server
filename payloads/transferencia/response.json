@@ -1,0 +1,32 @@
+{
+    "MessageResponse": {
+        "Header": {
+            "HeaderResponse": {
+                "response": {
+                    "serviceId": "BPI",
+                    "consumerId": "MMP",
+                    "moduleId": "SPECTRUM",
+                    "channelCode": "02",
+                    "messageId": "20170202131012",
+                    "timestamp": "2015-08-12T17:57:48",
+                    "countryCode": "PE",
+                    "groupMember": "G0001",
+                    "referenceNumber": "8079611012"
+                },
+                "status": {
+                    "responseType": "0",
+                    "busResponseCode": "0",
+                    "busResponseMessage": "EJECUCION CON EXITO",
+                    "srvResponseCode": "00",
+                    "srvResponseMessage": "EJECUCION CON EXITO",
+                    "messageIdResBus": "DPI_SAL_UAT_02_988979211001103601560000000000000"
+                }
+            }
+        },
+        "Body": {
+            "CuentasInternasResponse": {
+                "numOperacion": "3855"
+            }
+        }
+    }
+}
