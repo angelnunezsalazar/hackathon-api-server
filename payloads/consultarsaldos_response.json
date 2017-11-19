@@ -6,6 +6,7 @@
         "moneda": "001",
         "tasaAnual": "110.87",
         "saldoDisponible": "+1732.00",
+        "saldoContable": "+1732.00",
         "numeroCuenta": "1234567890"
     },
     {
@@ -15,6 +16,7 @@
         "moneda": "001",
         "tasaAnual": "110.87",
         "saldoDisponible": "+1732.00",
+        "saldoContable": "+1732.00",
         "numeroCuenta": "1234567890"
     }
 ]

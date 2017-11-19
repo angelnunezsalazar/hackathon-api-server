@@ -1,19 +1,34 @@
 require 'airborne'
 
 describe 'API ConsultarSaldos' do
-  it 'retorna las cuentas del cliente dado su codigo unico' do
+  it 'retorna todas las cuentas del cliente dado su codigo unico' do
     codigo_unico=rand.to_s[2..9]
     cuenta_request=generar_request_cuenta(codigo_unico)
-    cuenta1_response=crear_cuenta(cuenta_request)
-    cuenta2_response=crear_cuenta(cuenta_request)
+    crear_cuenta(cuenta_request)
+    crear_cuenta(cuenta_request)
 
     get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
     expect(json_body.length).to eql(2)
   end
 
-  #retorna los numeros de cuenta generados
+  it 'retorna una cuenta dado su codigo unico y numero de cuenta' do
+    codigo_unico=rand.to_s[2..9]
+    cuenta_request=generar_request_cuenta(codigo_unico)
+    cuenta_a_buscar=crear_cuenta(cuenta_request)
+    crear_cuenta(cuenta_request)
+    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
+    expect(json_body.length).to eql(1)
+  end
 
-  #(opcional) quita el codigoUnicoCliente de las cuentas
+  it 'retorna el saldo contable y disponible' do
+    codigo_unico=rand.to_s[2..9]
+    cuenta_request=generar_request_cuenta(codigo_unico)
+    cuenta_a_buscar=crear_cuenta(cuenta_request)
+    crear_cuenta(cuenta_request)
+    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
+    expect(json_body[0][:saldoDisponible]).to eql('0.0')
+    expect(json_body[0][:saldoContable]).to eql('0.0')
+  end
 end
 
 def generar_request_cuenta(codigo_unico)

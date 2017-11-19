@@ -24,11 +24,13 @@ post '/crearcliente' do
 end
 
 get '/consultarsaldos' do
-    codigo_unico_cliente = params['codigoUnicoCliente']
-    cuentas = Cuenta.where(codigo_unico_cliente: codigo_unico_cliente)
+    cuentas = Cuenta.where(codigo_unico_cliente: params['codigoUnicoCliente']) if params.has_key?('codigoUnicoCliente')
+    cuentas = Cuenta.where(numero_cuenta: params['numeroCuenta']) if params.has_key?('numeroCuenta')
     cuentas_hash = cuentas.map { |c| 
         cuenta=JSON.parse(c.json)
         cuenta["numeroCuenta"]=c.numero_cuenta
+        cuenta["saldoContable"]=c.saldo
+        cuenta["saldoDisponible"]=c.saldo
         cuenta
     }
     return cuentas_hash.to_json
@@ -38,13 +40,24 @@ post '/crearcuenta' do
     payload = JSON.parse(request.body.read)  
     cuenta=Cuenta.new
     cuenta.codigo_unico_cliente=payload['codigoUnicoCliente']
-    cuenta.numero_cuenta=rand.to_s[2..11]
+    cuenta.numero_cuenta=rand.to_s[2..14]
+    cuenta.saldo=0
     cuenta.json=payload.to_json
     cuenta.save
     return {"numeroCuenta" => cuenta.numero_cuenta}.to_json
 end
 
 post '/transferencia' do
-    resp = File.read("apis/transferencia/response.json")
+    payload = JSON.parse(request.body.read)
+    puts payload
+    cuenta_cargo = Cuenta.find_by(numero_cuenta: payload['numeroCuentaCargo'])
+    cuenta_cargo.saldo = cuenta_cargo.saldo - payload['importeCargo'].to_i
+    cuenta_abono = Cuenta.find_by(numero_cuenta: payload['numeroCuentaAbono'])
+    cuenta_abono.saldo=cuenta_abono.saldo + payload['importeAbono'].to_i
+    cuenta_cargo.transaction do
+        cuenta_cargo.save
+        cuenta_abono.save
+    end
+    return {"numOperacion" => rand.to_s[2..8]}.to_json
 end 
 

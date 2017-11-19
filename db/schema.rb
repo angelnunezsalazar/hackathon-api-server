@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
   create_table "cuentas", force: :cascade do |t|
     t.string "codigo_unico_cliente"
     t.string "numero_cuenta"
+    t.decimal "saldo", precision: 10, scale: 3
     t.string "json"
   end
 
