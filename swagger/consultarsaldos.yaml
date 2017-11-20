@@ -1,0 +1,129 @@
+---
+swagger: "2.0"
+info:
+  title: "API Consulta Saldos"
+  description: "Obtiene todas las cuentas con saldos de un cliente.\n<strong>Ejemplo\
+    \ de uso:</strong> al listar las cuentas activas del cliente en aplicaciones mó\
+    viles.\n<strong>Parametros entrada:</strong> información del cliente y/o tipo\
+    \ de cuenta. \n<strong>Parametros salida:</strong> listado de cuentas con descripció\
+    n, id completo, estado, tipo de firma, saldo disponible y contable."
+  version: "1.0.0"
+  x-ibm-name: "ms-consulta-saldos"
+host: "consultasaldos-UAT.interbankclouduat.pe"
+basePath: "/ms"
+paths:
+  /consultarsaldos:
+    get:
+      parameters:
+      - name: "codigoUnicoCliente"
+        in: "query"
+        required: true
+        type: "string"
+        x-example: "65112400"
+      - name: "numeroCuenta"
+        in: "query"
+        required: false
+        type: "string"
+        x-example: "02683919"
+      responses:
+        200:
+          description: "Conexion exitosa / Error tipo 01: Contraseña incorrecta en\
+            \ la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio\
+            \ o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el\
+            \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
+            \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
+          schema:
+            $ref: "#/definitions/ConsultarCuentaResponse"
+        401:
+          description: "Acceso no autorizado"
+        404:
+          description: "Ruta no encontrada"
+        500:
+          description: "Error interno del servicio. Favor intente luego"
+definitions:
+  Cuenta:
+    type: "object"
+    properties:
+      codigoUnicoCliente:
+        type: "string"
+        example: "48405934"
+      producto:
+        type: "string"
+        example: "002"
+      sProducto:
+        type: "string"
+        example: "205"
+      moneda:
+        type: "string"
+        example: "001"
+      tasaAnual:
+        type: "string"
+        example: "110.87"
+      saldoDisponible:
+        type: "string"
+        example: "1732.0010"
+      saldoContable:
+        type: "string"
+        example: "1732.0010"
+      numeroCuenta:
+        type: "string"
+        example: "1234567890"
+  ConsultarCuentaResponse:
+    type: array
+    items:
+      $ref: "#/definitions/Cuenta"
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: "realized"
+  cors:
+    enabled: true
+  assembly:
+    execute:
+    - set-variable:
+        title: "set-variable"
+        actions:
+        - set: "message.body"
+          value: "{\"MessageResponse\":{\"Header\":{\"HeaderResponse\":{\"response\"\
+            :{\"serviceId\":\"BPI\",\"consumerId\":\"cons01\",\"moduleId\":\"modctacte\"\
+            ,\"channelCode\":\"can01\",\"messageId\":\"1234567890\",\"timestamp\"\
+            :\"2015-08-12T17:57:48\",\"countryCode\":\"PE\",\"groupMember\":\"G0001\"\
+            ,\"referenceNumber\":\"8079671000\"},\"status\":{\"responseType\":\"0\"\
+            ,\"busResponseCode\":\"0\",\"busResponseMessage\":\"EJECUCION CON EXITO\"\
+            ,\"srvResponseCode\":\"00\",\"srvResponseMessage\":\"EJECUCION CON EXITO\"\
+            ,\"messageIdResBus\":\"DPI_SAL_UAT_02_140983795100110360156000000000000\"\
+            }}},\"Body\":{\"ConsultarCuentaV2Response\":{\"cliente\":{\"nombreCliente\"\
+            :\"GODOY RODRIGUEZ ELISA SPECTRUM\",\"tipoDocumentoIdentidad\":\"1\",\"\
+            numeroDocumentoIdentidad\":\"65112400\",\"tipoCliente\":\"P\"},\"cuentas\"\
+            :{\"cuenta\":[{\"idCuenta\":{\"entidad\":\"0003\",\"moneda\":\"0001\"\
+            ,\"oficina\":\"0100\",\"categoria\":\"0002\",\"numero\":\"00007000219014\"\
+            },\"datos\":{\"codigoAplicativo\":\"10\",\"codigoSubProducto\":\"206\"\
+            ,\"tipoFirma\":\"IND\",\"codigoSituacion\":\"00\",\"posicionTituloLegal\"\
+            :\"1\",\"saldoDisponible\":\"+1732.00\",\"saldoContable\":\"+1732.00\"\
+            ,\"descripcionProducto\":\"AHORROS MN\"}},{\"idCuenta\":{\"entidad\":\"\
+            0003\",\"moneda\":\"0001\",\"oficina\":\"0100\",\"categoria\":\"0002\"\
+            ,\"numero\":\"00007000236776\"},\"datos\":{\"codigoAplicativo\":\"10\"\
+            ,\"codigoSubProducto\":\"206\",\"tipoFirma\":\"IND\",\"codigoSituacion\"\
+            :\"00\",\"posicionTituloLegal\":\"1\",\"saldoDisponible\":\"+3000.00\"\
+            ,\"saldoContable\":\"+1500.00\",\"descripcionProducto\":\"AHORROS MN\"\
+            }},{\"idCuenta\":{\"entidad\":\"0003\",\"moneda\":\"0001\",\"oficina\"\
+            :\"0100\",\"categoria\":\"0002\",\"numero\":\"00007000243211\"},\"datos\"\
+            :{\"codigoAplicativo\":\"10\",\"codigoSubProducto\":\"206\",\"tipoFirma\"\
+            :\"IND\",\"codigoSituacion\":\"00\",\"posicionTituloLegal\":\"1\",\"saldoDisponible\"\
+            :\"+5000.00\",\"saldoContable\":\"+3500.00\",\"descripcionProducto\":\"\
+            AHORROS MN\"}}]}}}}}"
+        - set: "message.headers.content-type"
+          value: "application/json"
+        - set: "message.status.code"
+          value: "200"
+        version: "1.0.0"
+        description: "Dummy"
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: "apiKey"
+    description: ""
+    in: "header"
+    name: "X-IBM-Client-Id"
+security:
+- SecureID: []

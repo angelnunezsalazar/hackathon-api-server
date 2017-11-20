@@ -25,4 +25,13 @@ ActiveRecord::Schema.define(version: 20171117081623) do
     t.string "json"
   end
 
+  create_table "tarjetas", force: :cascade do |t|
+    t.string "codigo_unico_cliente"
+    t.string "numero_cuenta"
+    t.string "numero_tarjeta"
+    t.string "fecha_alta"
+    t.string "fecha_vencimiento"
+    t.string "json"
+  end
+
 end

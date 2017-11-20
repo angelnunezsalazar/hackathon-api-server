@@ -61,3 +61,18 @@ post '/transferencia' do
     return {"numOperacion" => rand.to_s[2..8]}.to_json
 end 
 
+post '/altatarjeta' do
+    payload = JSON.parse(request.body.read)  
+    tarjeta=Tarjeta.new
+    tarjeta.codigo_unico_cliente=payload['codigoUnicoCliente']
+    tarjeta.numero_tarjeta=rand.to_s[2..17]
+    tarjeta.numero_cuenta=rand.to_s[2..14]
+    tarjeta.fecha_alta=Time.now.strftime("%Y-%m-%d")
+    tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
+    tarjeta.json=payload.to_json
+    tarjeta.save
+    return {"numeroTarjeta" => tarjeta.numero_cuenta,
+            "numeroCuenta" => tarjeta.numero_tarjeta,
+            "fechaAlta" => tarjeta.fecha_alta,
+            "fechaVencimiento" => tarjeta.fecha_vencimiento}.to_json
+end

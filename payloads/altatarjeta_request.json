@@ -1,0 +1,21 @@
+{
+    "codigoUnicoCliente": "0060059893",
+    "identificadorProceso": "1",
+    "codigoMarca": "02",
+    "codigoMoneda": "1",
+    "importeLinea": "8000.00",
+    "importeLineaParalela": "0",
+    "diaPago": "05",
+    "indicadorDobleMoneda": "S",
+    "nombrePlastico": "PAOLO*MARTEL",
+    "codigoFormaPago": "1",
+    "importeLineaAdicional": "8000.00",
+    "porcentajeLineaAdicional": "10",
+    "codigoProducto": "565",
+    "cuentaNumeroSoles": "4528962458965",
+    "cuentaTipoSoles": "",
+    "importeDisponibleEfectivoTitular": "",
+    "porcentajeDisponibleEfectivoTitular": "",
+    "indicadorGarantia": "s",
+    "indicadorDevolucionCashback": "0"
+}

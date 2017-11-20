@@ -1,0 +1,200 @@
+---
+swagger: "2.0"
+info:
+  title: "API Crear Cliente"
+  description: "API que sirve para crear cliente en sistema de RM. RM es el sistema\
+    \ principal del banco en donde se guarda los codigos internos de cada cliente\
+    \ ( Código Unico)\n<strong>Ejemplo de uso:</strong> Lo usamos en todos los procesos\
+    \ se necesite crear un cliente , como antes de crear una cuenta o tarjeta si el\
+    \ cliente no existe primero usamos el API de crear cliente y luego seguimos con\
+    \ el flujo.\n<strong>Parametros Entrada:</strong> Datos personales del cliente,\
+    \ nombre, fecha nacimiento, dirección , etc\n<strong>Parametros Salida:</strong>\
+    \ Código Unico del cliente"
+  version: "1.0.0"
+  x-ibm-name: "ms-crearcliente"
+host: "crearcliente-UAT.interbankclouduat.pe"
+basePath: "/ms"
+paths:
+  /crearcliente:
+    post:
+      parameters:
+      - in: "body"
+        name: "request"
+        required: true
+        description: "Registra los datos de un cliente en RM."
+        schema:
+          $ref: "#/definitions/CrearCliente"
+      responses:
+        200:
+          description: "Conexion exitosa / Error tipo 01: Contraseña incorrecta en\
+            \ la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio\
+            \ o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el\
+            \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
+            \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
+          schema:
+            $ref: "#/definitions/CrearClienteResponse"
+        401:
+          description: "Acceso no autorizado"
+        404:
+          description: "Ruta no encontrada"
+        500:
+          description: "Error interno del servicio. Favor intente luego"
+definitions:
+  CrearCliente:
+    type: "object"
+    required:
+    - "apellidoMaterno"
+    - "apellidoPaterno"
+    - "codigoPaisNacimiento"
+    - "codigoPaisNacionalidad"
+    - "codigoPaisResidencia"
+    - "departamento"
+    - "distrito"
+    - "email"
+    - "estadoCivil"
+    - "fechaNacimiento"
+    - "listaTelefonos"
+    - "nombreVia"
+    - "primerNombre"
+    - "provincia"
+    - "sexo"
+    - "tipoDocumento"
+    - "tipoEmail"
+    - "tipoNacionalidad"
+    - "tipoVia"
+    properties:
+      tipoDocumento:
+        type: "string"
+        example: "1"
+      numeroDocumento:
+        type: "string"
+        example: "75450500"
+      fechaNacimiento:
+        type: "string"
+        example: "1980-01-01"
+      apellidoPaterno:
+        type: "string"
+        example: "CARDENAS"
+      apellidoMaterno:
+        type: "string"
+        example: "MENDIOLA"
+      primerNombre:
+        type: "string"
+        example: "LORENZO"
+      segundoNombre:
+        type: "string"
+        example: "JEREMIAS"
+      sexo:
+        type: "string"
+        example: "M"
+      estadoCivil:
+        type: "string"
+        example: "U"
+      tipoNacionalidad:
+        type: "string"
+        example: "0"
+      codigoPaisNacimiento:
+        type: "string"
+        example: "4028"
+      codigoPaisResidencia:
+        type: "string"
+        example: "4028"
+      codigoPaisNacionalidad:
+        type: "string"
+        example: "4028"
+      tipoVia:
+        type: "string"
+        example: "av"
+      nombreVia:
+        type: "string"
+        example: "SAN FRANCISCO"
+      numeroCalle:
+        type: "string"
+        example: "258"
+      idManzana:
+        type: "string"
+        example: "A"
+      idLote:
+        type: "string"
+        example: "8"
+      idInterior:
+        type: "string"
+        example: "102"
+      nombreUrbanizacion:
+        type: "string"
+        example: "LOS CONDORES"
+      referenciaUbicacion:
+        type: "string"
+        example: "AL FRENTE DE HOSPITAL CENTRAL"
+      departamento:
+        type: "string"
+        example: "LIMA"
+      provincia:
+        type: "string"
+        example: "LIMA"
+      distrito:
+        type: "string"
+        example: "AREQUIPA"
+      listaTelefonos:
+        example: []
+      tipoEmail:
+        type: "string"
+        example: "p"
+      email:
+        type: "string"
+        example: "ejemplo@gmail.com"
+      codigoCIIU:
+        type: "string"
+        example: ""
+      fechaInicioEmpleo:
+        type: "string"
+        example: "2015-09-20"
+      nombreEmpresa:
+        type: "string"
+        example: "TELNET S.A."
+      codigoOcupacion:
+        type: "string"
+        example: "EMPLEADO"
+  CrearClienteResponse:
+    type: "object"
+    properties:
+      codigoUnicoCliente:
+        type: "string"
+        example: "0060060027"
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: "realized"
+  cors:
+    enabled: true
+  assembly:
+    execute:
+    - set-variable:
+        title: "set-variable"
+        actions:
+        - set: "message.body"
+          value: "{\"MessageResponse\":{\"Header\":{\"HeaderResponse\":{\"response\"\
+            :{\"serviceId\":\"SRM\",\"consumerId\":\"WBP\",\"moduleId\":\"aperturaTCv2\"\
+            ,\"channelCode\":\"06\",\"messageId\":\"HACKATON_1234567890\",\"timestamp\"\
+            :\"2017-10-25T17:18:13.412595\",\"countryCode\":\"PE\",\"groupMember\"\
+            :\"G0003\",\"referenceNumber\":\"48719232_20170920144231699_515\"},\"\
+            status\":{\"responseType\":\"0\",\"busResponseCode\":\"0\",\"busResponseMessage\"\
+            :\"EJECUCION CON EXITO\",\"srvResponseCode\":\"00\",\"srvResponseMessage\"\
+            :\"EJECUCION CON EXITO\",\"messageIdResBus\":\"HACKATON_1234567890\"}}},\"\
+            Body\":{\"crearClienteResponse\":{\"codigoUnicoCliente\":\"0060060027\"\
+            }}}}"
+        - set: "message.headers.content-type"
+          value: "application/json"
+        - set: "message.status.code"
+          value: "200"
+        version: "1.0.0"
+        description: "Dummy"
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: "apiKey"
+    description: ""
+    in: "header"
+    name: "X-IBM-Client-Id"
+security:
+- SecureID: []
