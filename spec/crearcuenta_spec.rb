@@ -3,7 +3,7 @@ require 'airborne'
 describe 'API CrearCuenta' do
   it 'crea una cuenta y retorna su nro de cuenta' do
     request = JSON.parse(File.read('payloads/crearcuenta_request.json'))
-    post 'http://localhost:9292/crearcuenta', request
+    post '/crearcuenta', request
     expect_json_keys([:numeroCuenta])
   end
 end

@@ -78,27 +78,15 @@ x-ibm-configuration:
     enabled: true
   assembly:
     execute:
-    - set-variable:
-        title: "set-variable"
-        actions:
-        - set: "message.body"
-          value: "{\"header\":{\"response\":{\"serviceId\":\"APE\",\"consumerId\"\
-            :\"WEB\",\"moduleId\":\"CUENTA\",\"channelCode\":\"6\",\"messageId\":\"\
-            HACKATON_1234567890\",\"timestamp\":\"2017-10-26T10:51:14.675585\",\"\
-            countryCode\":\"PE\",\"groupMember\":\"G0003\",\"referenceNumber\":\"\
-            48719232_20170920144231699_515\"},\"status\":{\"responseType\":\"0\",\"\
-            busResponseCode\":\"0\",\"busResponseMessage\":\"OK\",\"srvResponseCode\"\
-            :\"0\",\"srvResponseMessage\":\"EJECUCION CON EXITO\",\"eqvResponseCode\"\
-            :\"00\",\"eqvResponseMessage\":\"\",\"messageIdResBus\":\"HACKATON_1234567890\"\
-            }},\"body\":{\"controles\":{\"banco\":\"03\",\"moneda\":\"1\",\"producto\"\
-            :\"002\"},\"nroCuenta\":\"1007000500767\",\"subProducto\":\"202\",\"tasaEfectiva\"\
-            :\"0\",\"nombreBeneficiario\":\"JORGE VEGA\"}}"
-        - set: "message.headers.content-type"
-          value: "application/json"
-        - set: "message.status.code"
-          value: "200"
+    - proxy:
+        title: "proxy"
+        timeout: 60
+        verb: "keep"
+        cache-response: "protocol"
+        cache-ttl: 900
         version: "1.0.0"
-        description: "Dummy"
+        description: "Service"
+        target-url: "https://hackathon-api-server.herokuapp.com/crearcuenta"
     catch: []
 securityDefinitions:
   SecureID:

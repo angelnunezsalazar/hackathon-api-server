@@ -5,7 +5,7 @@ describe 'API ObtenerDatosCliente' do
     numero_documento=rand.to_s[2..9]
     datos_cliente=generar_request_crearcliente(numero_documento)
     crear_cliente(datos_cliente)
-    get "http://localhost:9292/obtenerdatoscliente?numeroDocumento=#{numero_documento}"
+    get "/obtenerdatoscliente?numeroDocumento=#{numero_documento}"
     expect(json_body).not_to be_empty
   end
 
@@ -23,5 +23,5 @@ def generar_request_crearcliente(numero_documento)
 end
 
 def crear_cliente(request)
-  post 'http://localhost:9292/crearcliente', request
+  post '/crearcliente', request
 end

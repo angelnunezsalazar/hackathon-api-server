@@ -7,7 +7,7 @@ describe 'API ConsultarSaldos' do
     crear_cuenta(cuenta_request)
     crear_cuenta(cuenta_request)
 
-    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
+    get "/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
     expect(json_body.length).to eql(2)
   end
 
@@ -16,7 +16,7 @@ describe 'API ConsultarSaldos' do
     cuenta_request=generar_request_cuenta(codigo_unico)
     cuenta_a_buscar=crear_cuenta(cuenta_request)
     crear_cuenta(cuenta_request)
-    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
+    get "/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
     expect(json_body.length).to eql(1)
   end
 
@@ -25,7 +25,7 @@ describe 'API ConsultarSaldos' do
     cuenta_request=generar_request_cuenta(codigo_unico)
     cuenta_a_buscar=crear_cuenta(cuenta_request)
     crear_cuenta(cuenta_request)
-    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
+    get "/consultarsaldos?codigoUnicoCliente=#{codigo_unico}&numeroCuenta=#{cuenta_a_buscar[:numeroCuenta]}"
     expect(json_body[0][:saldoDisponible]).to eql('0.0')
     expect(json_body[0][:saldoContable]).to eql('0.0')
   end
@@ -38,6 +38,6 @@ def generar_request_cuenta(codigo_unico)
 end
 
 def crear_cuenta(request)
-  post 'http://localhost:9292/crearcuenta', request
+  post '/crearcuenta', request
   return json_body
 end

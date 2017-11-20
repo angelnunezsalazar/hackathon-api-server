@@ -23,7 +23,7 @@ paths:
         required: true
         description: "Registra los datos de un cliente en RM."
         schema:
-          $ref: "#/definitions/CrearCliente"
+          $ref: "#/definitions/MessageRequest"
       responses:
         200:
           description: "Conexion exitosa / Error tipo 01: Contraseña incorrecta en\
@@ -32,7 +32,7 @@ paths:
             \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
             \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
           schema:
-            $ref: "#/definitions/CrearClienteResponse"
+            $ref: "#/definitions/MessageResponse"
         401:
           description: "Acceso no autorizado"
         404:
@@ -40,28 +40,40 @@ paths:
         500:
           description: "Error interno del servicio. Favor intente luego"
 definitions:
-  CrearCliente:
+  MessageRequest:
     type: "object"
     required:
-    - "apellidoMaterno"
-    - "apellidoPaterno"
-    - "codigoPaisNacimiento"
-    - "codigoPaisNacionalidad"
-    - "codigoPaisResidencia"
-    - "departamento"
-    - "distrito"
-    - "email"
-    - "estadoCivil"
-    - "fechaNacimiento"
-    - "listaTelefonos"
-    - "nombreVia"
-    - "primerNombre"
-    - "provincia"
-    - "sexo"
     - "tipoDocumento"
-    - "tipoEmail"
+    - "numeroDocumento"
+    - "fechaNacimiento"
+    - "apellidoPaterno"
+    - "apellidoMaterno"
+    - "primerNombre"
+    - "segundoNombre"
+    - "sexo"
+    - "estadoCivil"
     - "tipoNacionalidad"
+    - "codigoPaisNacimiento"
+    - "codigoPaisResidencia"
+    - "codigoPaisNacionalidad"
     - "tipoVia"
+    - "nombreVia"
+    - "numeroCalle"
+    - "idManzana"
+    - "idLote"
+    - "idInterior"
+    - "nombreUrbanizacion"
+    - "referenciaUbicacion"
+    - "departamento"
+    - "provincia"
+    - "distrito"
+    - "listaTelefonos"
+    - "tipoEmail"
+    - "email"
+    - "codigoCIIU"
+    - "fechaInicioEmpleo"
+    - "nombreEmpresa"
+    - "codigoOcupacion"
     properties:
       tipoDocumento:
         type: "string"
@@ -155,7 +167,7 @@ definitions:
       codigoOcupacion:
         type: "string"
         example: "EMPLEADO"
-  CrearClienteResponse:
+  MessageResponse:
     type: "object"
     properties:
       codigoUnicoCliente:
@@ -169,26 +181,15 @@ x-ibm-configuration:
     enabled: true
   assembly:
     execute:
-    - set-variable:
-        title: "set-variable"
-        actions:
-        - set: "message.body"
-          value: "{\"MessageResponse\":{\"Header\":{\"HeaderResponse\":{\"response\"\
-            :{\"serviceId\":\"SRM\",\"consumerId\":\"WBP\",\"moduleId\":\"aperturaTCv2\"\
-            ,\"channelCode\":\"06\",\"messageId\":\"HACKATON_1234567890\",\"timestamp\"\
-            :\"2017-10-25T17:18:13.412595\",\"countryCode\":\"PE\",\"groupMember\"\
-            :\"G0003\",\"referenceNumber\":\"48719232_20170920144231699_515\"},\"\
-            status\":{\"responseType\":\"0\",\"busResponseCode\":\"0\",\"busResponseMessage\"\
-            :\"EJECUCION CON EXITO\",\"srvResponseCode\":\"00\",\"srvResponseMessage\"\
-            :\"EJECUCION CON EXITO\",\"messageIdResBus\":\"HACKATON_1234567890\"}}},\"\
-            Body\":{\"crearClienteResponse\":{\"codigoUnicoCliente\":\"0060060027\"\
-            }}}}"
-        - set: "message.headers.content-type"
-          value: "application/json"
-        - set: "message.status.code"
-          value: "200"
+    - proxy:
+        title: "proxy"
+        timeout: 60
+        verb: "keep"
+        cache-response: "protocol"
+        cache-ttl: 900
         version: "1.0.0"
-        description: "Dummy"
+        description: "Service"
+        target-url: "https://hackathon-api-server.herokuapp.com/crearcliente"
     catch: []
 securityDefinitions:
   SecureID:

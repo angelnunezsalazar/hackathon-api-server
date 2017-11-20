@@ -33,7 +33,7 @@ paths:
             \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
             \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
           schema:
-            $ref: "#/definitions/ConsultarCuentaResponse"
+            $ref: "#/definitions/MessageResponse"
         401:
           description: "Acceso no autorizado"
         404:
@@ -68,7 +68,7 @@ definitions:
       numeroCuenta:
         type: "string"
         example: "1234567890"
-  ConsultarCuentaResponse:
+  MessageResponse:
     type: array
     items:
       $ref: "#/definitions/Cuenta"
@@ -80,44 +80,15 @@ x-ibm-configuration:
     enabled: true
   assembly:
     execute:
-    - set-variable:
-        title: "set-variable"
-        actions:
-        - set: "message.body"
-          value: "{\"MessageResponse\":{\"Header\":{\"HeaderResponse\":{\"response\"\
-            :{\"serviceId\":\"BPI\",\"consumerId\":\"cons01\",\"moduleId\":\"modctacte\"\
-            ,\"channelCode\":\"can01\",\"messageId\":\"1234567890\",\"timestamp\"\
-            :\"2015-08-12T17:57:48\",\"countryCode\":\"PE\",\"groupMember\":\"G0001\"\
-            ,\"referenceNumber\":\"8079671000\"},\"status\":{\"responseType\":\"0\"\
-            ,\"busResponseCode\":\"0\",\"busResponseMessage\":\"EJECUCION CON EXITO\"\
-            ,\"srvResponseCode\":\"00\",\"srvResponseMessage\":\"EJECUCION CON EXITO\"\
-            ,\"messageIdResBus\":\"DPI_SAL_UAT_02_140983795100110360156000000000000\"\
-            }}},\"Body\":{\"ConsultarCuentaV2Response\":{\"cliente\":{\"nombreCliente\"\
-            :\"GODOY RODRIGUEZ ELISA SPECTRUM\",\"tipoDocumentoIdentidad\":\"1\",\"\
-            numeroDocumentoIdentidad\":\"65112400\",\"tipoCliente\":\"P\"},\"cuentas\"\
-            :{\"cuenta\":[{\"idCuenta\":{\"entidad\":\"0003\",\"moneda\":\"0001\"\
-            ,\"oficina\":\"0100\",\"categoria\":\"0002\",\"numero\":\"00007000219014\"\
-            },\"datos\":{\"codigoAplicativo\":\"10\",\"codigoSubProducto\":\"206\"\
-            ,\"tipoFirma\":\"IND\",\"codigoSituacion\":\"00\",\"posicionTituloLegal\"\
-            :\"1\",\"saldoDisponible\":\"+1732.00\",\"saldoContable\":\"+1732.00\"\
-            ,\"descripcionProducto\":\"AHORROS MN\"}},{\"idCuenta\":{\"entidad\":\"\
-            0003\",\"moneda\":\"0001\",\"oficina\":\"0100\",\"categoria\":\"0002\"\
-            ,\"numero\":\"00007000236776\"},\"datos\":{\"codigoAplicativo\":\"10\"\
-            ,\"codigoSubProducto\":\"206\",\"tipoFirma\":\"IND\",\"codigoSituacion\"\
-            :\"00\",\"posicionTituloLegal\":\"1\",\"saldoDisponible\":\"+3000.00\"\
-            ,\"saldoContable\":\"+1500.00\",\"descripcionProducto\":\"AHORROS MN\"\
-            }},{\"idCuenta\":{\"entidad\":\"0003\",\"moneda\":\"0001\",\"oficina\"\
-            :\"0100\",\"categoria\":\"0002\",\"numero\":\"00007000243211\"},\"datos\"\
-            :{\"codigoAplicativo\":\"10\",\"codigoSubProducto\":\"206\",\"tipoFirma\"\
-            :\"IND\",\"codigoSituacion\":\"00\",\"posicionTituloLegal\":\"1\",\"saldoDisponible\"\
-            :\"+5000.00\",\"saldoContable\":\"+3500.00\",\"descripcionProducto\":\"\
-            AHORROS MN\"}}]}}}}}"
-        - set: "message.headers.content-type"
-          value: "application/json"
-        - set: "message.status.code"
-          value: "200"
+    - proxy:
+        title: "proxy"
+        timeout: 60
+        verb: "keep"
+        cache-response: "protocol"
+        cache-ttl: 900
         version: "1.0.0"
-        description: "Dummy"
+        description: "Service"
+        target-url: "https://hackathon-api-server.herokuapp.com/consultarsaldos"
     catch: []
 securityDefinitions:
   SecureID:

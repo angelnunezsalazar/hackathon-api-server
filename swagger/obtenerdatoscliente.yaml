@@ -29,7 +29,7 @@ paths:
             \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
             \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
           schema:
-            $ref: "#/definitions/ObtenerDatosClienteResponse"
+            $ref: "#/definitions/MessageResponse"
         401:
           description: "Acceso no autorizado"
         404:
@@ -37,28 +37,8 @@ paths:
         500:
           description: "Error interno del servicio. Favor intente luego"
 definitions:
-  ObtenerDatosClienteResponse:
+  MessageResponse:
     type: "object"
-    required:
-    - "apellidoMaterno"
-    - "apellidoPaterno"
-    - "codigoPaisNacimiento"
-    - "codigoPaisNacionalidad"
-    - "codigoPaisResidencia"
-    - "departamento"
-    - "distrito"
-    - "email"
-    - "estadoCivil"
-    - "fechaNacimiento"
-    - "listaTelefonos"
-    - "nombreVia"
-    - "primerNombre"
-    - "provincia"
-    - "sexo"
-    - "tipoDocumento"
-    - "tipoEmail"
-    - "tipoNacionalidad"
-    - "tipoVia"
     properties:
       tipoDocumento:
         type: "string"
@@ -168,7 +148,7 @@ x-ibm-configuration:
         cache-ttl: 900
         version: "1.0.0"
         description: "Service"
-        target-url: "http://hackathon-3.interbankclouduat.pe:4567/obtenerdatoscontactocliente"
+        target-url: "https://hackathon-api-server.herokuapp.com/obtenerdatoscliente"
     catch: []
 securityDefinitions:
   SecureID:

@@ -13,10 +13,10 @@ describe 'API Transferencia' do
       "numeroCuentaCargo" => cuenta_2[:numeroCuenta],
       "importeCargo" => 100,
     }
-    post "http://localhost:9292/transferencia", request
+    post "/transferencia", request
     expect_json_keys([:numOperacion])
 
-    get "http://localhost:9292/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
+    get "/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
   end
 
 end
@@ -28,6 +28,6 @@ def generar_request_cuenta(codigo_unico)
 end
 
 def crear_cuenta(request)
-  post 'http://localhost:9292/crearcuenta', request
+  post '/crearcuenta', request
   return json_body
 end
