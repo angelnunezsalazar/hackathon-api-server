@@ -4,7 +4,7 @@ require './config/environments'
 Dir[File.join(File.dirname(__FILE__), 'model', '*.rb')].each {|file| require file }
 
 get '/' do
-    return "Bienvenido"
+    return "Hackathon API Server running!"
 end
 
 get '/obtenerdatoscliente' do
