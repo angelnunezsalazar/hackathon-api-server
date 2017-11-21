@@ -1,0 +1,73 @@
+[{
+    "numeroMovimiento": "1",
+    "monedaMovimiento": "010",
+    "fechaFactura": "2017-11-15",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "99.99",
+    "nombreComercioReducido": "COMPRA ELECTRO",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "2",
+    "monedaMovimiento": "",
+    "fechaFactura": "2017-11-14",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "100.00",
+    "nombreComercioReducido": "DISP EFECT CAJERO",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "3",
+    "fechaFactura": "2017-11-15",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "15.23",
+    "nombreComercioReducido": "COMPRAS ELECTRO",
+    "indicadorConversionCuotas": "false"
+  }, {
+    "numeroMovimiento": "4",
+    "monedaMovimiento": "010",
+    "fechaFactura": "2017-11-14",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "789.00",
+    "nombreComercioReducido": "COMPRAS ALIMENTOS",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "5",
+    "monedaMovimiento": "001",
+    "fechaFactura": "2017-11-14",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "120.00",
+    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "6",
+    "monedaMovimiento": "010",
+    "fechaFactura": "2017-11-15",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "45.99",
+    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "7",
+    "monedaMovimiento": "001",
+    "fechaFactura": "2017-11-13",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "250.00",
+    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "indicadorConversionCuotas": "true"
+  }, {
+    "numeroMovimiento": "8",
+    "monedaMovimiento": "010",
+    "fechaFactura": "2017-11-14",
+    "fechaProceso": "2017-11-15",
+    "signoImporte": "-",
+    "importeFactura": "10.00",
+    "nombreComercioReducido": "COMPRAS ALIMENTOS",
+    "indicadorConversionCuotas": "false"
+  }
+]

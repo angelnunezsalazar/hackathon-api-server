@@ -140,3 +140,8 @@ post '/reclamos' do
     reclamo.save
     return {"numeroReclamo" => reclamo.numero_reclamo}.to_json
 end
+
+get '/tarjetas/:numeroTarjeta/movimientos' do
+    request = JSON.parse(File.read('payloads/consultarmovimientos_response.json'))
+    return request.to_json
+end
