@@ -113,3 +113,19 @@ post '/tarjetas' do
             "fechaAlta" => tarjeta.fecha_alta,
             "fechaVencimiento" => tarjeta.fecha_vencimiento}.to_json
 end
+
+get '/reclamos/:numeroReclamo' do
+    reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
+    reclamo_hash=JSON.parse(reclamo.json)
+    reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
+    return reclamo_hash.to_json
+end
+
+post '/reclamos' do
+    payload = JSON.parse(request.body.read)  
+    reclamo = Reclamo.new
+    reclamo.numero_reclamo = rand.to_s[1..20]
+    reclamo.json=payload.to_json
+    reclamo.save
+    return {"numeroReclamo" => reclamo.numero_reclamo}.to_json
+end

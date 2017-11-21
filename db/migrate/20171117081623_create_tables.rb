@@ -21,5 +21,10 @@ class CreateTables < ActiveRecord::Migration[5.1]
 			t.string  "fecha_vencimiento"
 			t.string  "json"
 		end
+
+		create_table "reclamos", :force => true do |t|
+			t.string  "numero_reclamo"
+		    t.string  "json"
+		end
 	end
 end
