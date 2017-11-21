@@ -1,5 +1,12 @@
 # hackathon-api-server
 
+Ambiente de Trabajo Windows
+---------------------------
+
+- Descargar Ruby para Windows: ruby-2.3.3 o ruby-2.3.4
+
+-
+
 Instrucciones
 -----------------
 - Levantar localmente el web server

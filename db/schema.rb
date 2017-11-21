@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
   end
 
   create_table "reclamos", force: :cascade do |t|
+    t.string "codigo_unico_cliente"
     t.string "numero_reclamo"
     t.string "json"
   end

@@ -114,6 +114,16 @@ post '/tarjetas' do
             "fechaVencimiento" => tarjeta.fecha_vencimiento}.to_json
 end
 
+get '/clientes/:codigoUnicoCliente/reclamos' do
+    reclamos = Reclamo.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    hash = reclamos.map { |r| 
+        reclamo=JSON.parse(r.json)
+        reclamo["numeroReclamo"]=r.numero_reclamo
+        reclamo
+    }
+    return hash.to_json
+end
+
 get '/reclamos/:numeroReclamo' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
     reclamo_hash=JSON.parse(reclamo.json)
@@ -124,6 +134,7 @@ end
 post '/reclamos' do
     payload = JSON.parse(request.body.read)  
     reclamo = Reclamo.new
+    reclamo.codigo_unico_cliente=payload['codigoUnicoCliente']
     reclamo.numero_reclamo = rand.to_s[1..20]
     reclamo.json=payload.to_json
     reclamo.save
