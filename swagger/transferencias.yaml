@@ -1,0 +1,105 @@
+swagger: '2.0'
+info:
+  title: API Transferencia
+  description: |-
+    Servicio permite realizar transferencia de dinero entre cuentas internas, así como también  con tarjetas de crédito
+    <strong>Ejemplo de uso:</strong> transferencias internar, disposición de efectivo y pago de TC.
+    <strong>Parametros entrada:</strong> información de la moneda del movimiento, cuenta del cargo/abono y/o tarjeta del abono/cargo.
+    <strong>Parametros salida:</strong> número de operación.
+  version: 1.0.0
+  x-ibm-name: ms-transferencia
+host: transferencia-UAT.interbankclouduat.pe
+basePath: /ms
+paths:
+  /transferencia:
+    post:
+      summary: Realiza una Transferencia entre cuentas
+      parameters:
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/Transferencia'
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/TransferenciaResponse'
+definitions:
+  Transferencia:
+    type: object
+    required:
+      - numeroCuentaCargo
+      - monedaCargo
+      - importeCargo
+      - numeroCuentaAbono
+      - monedaAbono
+      - importeAbono
+      - tipoCambio
+      - glosaDinamica
+    properties:
+      numeroCuentaCargo:
+        type: string
+        example: '1007000219430'
+      monedaCargo:
+        type: string
+        example: '001'
+      importeCargo:
+        type: string
+        example: '60.00'
+      numeroCuentaAbono:
+        type: string
+        example: '1007000219430'
+      monedaAbono:
+        type: string
+        example: '010'
+      importeAbono:
+        type: string
+        example: '60.00'
+      tipoCambio:
+        type: string
+        example: '3.0'
+      glosa:
+        type: string
+        example: 'TRANSFERENCIA POR DEUDA ALMUERZO'
+  TransferenciaResponse:
+    type: object
+    properties:
+      numOperacion:
+        type: string
+        example: '5857319453'
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: post
+                  path: /transferencia
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/transferencia'
+          otherwise: []
+          version: 1.0.0
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - SecureID: []

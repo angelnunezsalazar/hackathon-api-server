@@ -33,11 +33,15 @@ Instrucciones
 	$ heroku run rake db:clear --app hackathon-api-server
 	$ heroku run rake db:migrate --app hackathon-api-server
 
-- Ver los logs
 
+
+Logs
+-----------------
+- Ver los logs
 	$ heroku logs --app hackathon-api-server
 
 Postgresql
 ------------------
 Consultar todas las tablas
+
 	"SELECT table_name FROM information_schema.tables WHERE table_schema='public'"

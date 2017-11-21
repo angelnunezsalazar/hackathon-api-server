@@ -1,0 +1,149 @@
+swagger: '2.0'
+info:
+  title: API Cuentas
+  description: |-
+    API que sirve para la creación de una cuenta en el Banco. Esta cuenta se registrar en el sistema SAVING y se puede crear cuentas de diversos tipos.
+    <strong>Ejemplo de uso:</strong> Se utiliza para realizar la apertura de Cuenta Digital. Desde otras aplicaciones podemos crear una cuenta al cliente en este proceso de valida la identidad del cliente y se envia a crear una cuenta : Simple, Sueldo, Millonaria.
+    <strong>Parametros Entrada:</strong> código unico del cliente, el código producto y subproducto que se quiere crear
+    <strong>Parametros Salida:</strong>El número de cuenta creada
+  version: 1.0.0
+  x-ibm-name: ms-crearcuentav2
+host: crearcuentav2-UAT.interbankclouduat.pe
+basePath: /ms
+paths:
+  /cuentas:
+    post:
+      summary: Registrar una nueva cuenta
+      parameters:
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/Cuenta'
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/CrearCuentaResponse'
+  '/cuentas/{numeroCuenta}':
+    get:
+      summary: "Retorna los datos de una cuenta'."
+      parameters:
+        - name: numeroCuenta
+          in: path
+          required: true
+          description: Número de la Cuenta.
+          type: string
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/Cuenta'
+  '/clientes/{codigoUnicoCliente}/cuentas':
+    get:
+      summary: Retorna todas las cuentas de un cliente'.
+      parameters:
+        - name: codigoUnicoCliente
+          in: path
+          required: true
+          description: Código Único del cliente
+          type: string
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+              type: array
+              items:
+                $ref: "#/definitions/Cuenta"
+definitions:
+  Cuenta:
+    type: object
+    required:
+      - codigoUnicoCliente
+      - producto
+      - sProducto
+      - moneda
+      - tasaAnual
+    properties:
+      codigoUnicoCliente:
+        type: string
+        example: '4568703'
+      producto:
+        type: string
+        example: '002'
+      sProducto:
+        type: string
+        example: '205'
+      moneda:
+        type: string
+        example: '001'
+      tasaAnual:
+        type: string
+        example: '110.87'
+  CrearCuentaResponse:
+    type: object
+    properties:
+      numeroCuenta:
+        type: string
+        example: '1007000500767'
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: post
+                  path: /cuentas
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/cuentas'
+            - operations:
+                - verb: get
+                  path: '/cuentas/{numeroCuenta}'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/cuentas/{numeroCuenta}'
+            - operations:
+                - verb: get
+                  path: '/clientes/{codigoUnicoCliente}/cuentas'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/{codigoUnicoCliente}/cuentas'
+          otherwise: []
+          version: 1.0.0
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - SecureID: []

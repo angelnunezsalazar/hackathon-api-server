@@ -72,7 +72,7 @@ post '/transferencia' do
         cuenta_cargo.save
         cuenta_abono.save
     end
-    return {"numOperacion" => rand.to_s[2..8]}.to_json
+    return {"numOperacion" => rand.to_s[1..10]}.to_json
 end 
 
 get '/tarjetas/:numeroTarjeta' do
