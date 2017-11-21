@@ -1,34 +1,29 @@
 swagger: '2.0'
 info:
-  title: API Tarjetas de Crédito
-  description: |-
-    API que se encarga de crear una tarjeta de credito para un cliente titular. A la tarjeta se le coloca la marca tipo, moneda, importe de Linea, etc
-    <strong>Ejemplo de uso:</strong> Se ha utilizado esta API para la venta digital de tarjetas de credito, en donde se ha tenido alcance para clientes y no clientes del banco, ofreciendo campañas personalizadas con una pre-evaluación a los clientes
-
-    <strong>Parametros Entrada:</strong> Código Unico, cóigo de Marca, Tipo, Linea de Credito, dia pago, etc.
-    <strong>Parametros Salida:</strong> Código Unico, Número Tarjeta, Número Cuenta, fecha Alta, fecha Vencimiento
+  title: API FichaReclamo
+  description: "Deja un reclamo en el Sistema de Telesoft, este documento es la evidencia de una solicitud y/o reclamo de un cliente del banco.\n<strong>Ejemplo de uso:</strong> al habilitar una tarjeta para compras por internet o viajes al exterior, esto deja una solicitud (ficha).\n<strong>Parametros entrada:</strong> tipo,subtipo,circuito - categoría de la ficha. codigoCliente,codigoEmpresa - identificación del solicitante. \n<strong>Parametros salida:</strong> numeroReclamo - id del reclamo generado."
   version: 1.0.0
-  x-ibm-name: ms-altatarjeta
-host: altatarjeta-UAT.interbankclouduat.pe
+  x-ibm-name: ms-generacionfichareclamo
+host: 'kafka04-prod01.messagehub.services.us-south.bluemix.net:9093'
 basePath: /ms
 paths:
-  /tarjetas:
+  /reclamos:
     post:
-      summary: Registra una nueva tarjeta.
+      summary: Registra una ficha de reclamo
       parameters:
         - in: body
           name: request
           required: true
           schema:
-            $ref: '#/definitions/Tarjeta'
+            $ref: '#/definitions/Reclamo'
       responses:
         '200':
           description: Operación Exitosa
           schema:
-            $ref: '#/definitions/CrearTarjetaResponse'
-  '/tarjetas/{numeroTarjeta}':
+            $ref: '#/definitions/CrearFichaReclamoResponse'
+  '/reclamos/{numeroReclamo}':
     get:
-      summary: Retorna los datos de una tarjeta.
+      summary: Retorna los datos de una ficha de reclamo
       parameters:
         - name: numeroTarjeta
           in: path
@@ -39,10 +34,10 @@ paths:
         '200':
           description: Operación Exitosa
           schema:
-            $ref: '#/definitions/Tarjeta'
-  '/clientes/{codigoUnicoCliente}/tarjetas':
+            $ref: '#/definitions/FichaReclamo'
+  '/clientes/{codigoUnicoCliente}/reclamos':
     get:
-      summary: Retorna todas las tarjetas de un cliente.
+      summary: Retorna todos los reclamos de un cliente.
       parameters:
         - name: codigoUnicoCliente
           in: path
@@ -55,51 +50,56 @@ paths:
           schema:
               type: array
               items:
-                $ref: '#/definitions/Tarjeta'
+                $ref: '#/definitions/FichaReclamo'
 definitions:
-  Tarjeta:
+  FichaReclamo:
     type: object
     required:
       - codigoUnicoCliente
-      - codigoMarca
-      - codigoMoneda
-      - importeLinea
-      - diaPago
-      - nombrePlastico
+      - codigoAplicativo
+      - estado
+      - subtipo
+      - tipo
     properties:
       codigoUnicoCliente:
         type: string
-        example: '0060059893'
-      codigoMarca:
+        example: '60030365'
+      tipo:
         type: string
-        example: '02'
-      codigoMoneda:
+        example: '272'
+      subtipo:
         type: string
-        example: '001'
-      importeLinea:
+        example: '134'
+      estado:
         type: string
-        example: '8000.00'
-      diaPago:
+      codigoEmpresa:
         type: string
-        example: '05'
-      nombrePlastico:
+        example: '003'
+      observacion:
         type: string
-        example: 'PAOLO MARTEL'
-  CrearTarjetaResponse:
-    type: object
-    properties:
-      numeroTarjeta:
+      sectorDerivado:
         type: string
-        example: '1245686947573444'
-      numeroCuenta:
-        type: string
-        example: '1007000500767'
+        example: '0'
       fechaAlta:
         type: string
-        example: '2017-10-25'
-      fechaVencimiento:
+        example: '2017-03-18'
+      usuarioDerivado:
         type: string
-        example: '2022-10-01'
+      sucursalAlta:
+        type: string
+      codigoAplicativo:
+        type: string
+        example: BPI
+      detalleProductos:
+        type: string
+      detalleCampos:
+        type: string
+  CrearFichaReclamoResponse:
+    type: object
+    properties:
+      numeroReclamo:
+        type: string
+        example: '2727384044'
 x-ibm-configuration:
   enforced: true
   testable: true
@@ -113,7 +113,7 @@ x-ibm-configuration:
           case:
             - operations:
                 - verb: post
-                  path: /tarjetas
+                  path: /reclamos
               execute:
                 - proxy:
                     title: proxy
@@ -123,10 +123,10 @@ x-ibm-configuration:
                     cache-ttl: 900
                     version: 1.0.0
                     description: Service
-                    target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas'
+                    target-url: 'https://hackathon-api-server.herokuapp.com/reclamos'
             - operations:
                 - verb: get
-                  path: '/tarjetas/{numeroTarjeta}'
+                  path: '/reclamos/{numeroReclamo}'
               execute:
                 - proxy:
                     title: proxy
@@ -136,10 +136,10 @@ x-ibm-configuration:
                     cache-ttl: 900
                     version: 1.0.0
                     description: Service
-                    target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas/{numeroTarjeta}'
+                    target-url: 'https://hackathon-api-server.herokuapp.com/reclamos/{numeroReclamo}'
             - operations:
                 - verb: get
-                  path: '/clientes/{codigoUnicoCliente}/tarjetas'
+                  path: '/clientes/{codigoUnicoCliente}/reclamos'
               execute:
                 - proxy:
                     title: proxy
@@ -149,7 +149,7 @@ x-ibm-configuration:
                     cache-ttl: 900
                     version: 1.0.0
                     description: Service
-                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/{codigoUnicoCliente}/tarjetas'
+                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/{codigoUnicoCliente}/reclamos'
           otherwise: []
           version: 1.0.0
     catch: []

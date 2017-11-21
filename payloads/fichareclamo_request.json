@@ -1,21 +1,11 @@
 {
+    "codigoUnicoCliente": "60030365",
     "tipo": "272",
     "subtipo": "134",
-    "circuito": "3",
-    "estado": "giamij",
-    "motivo": "2",
-    "codigoCliente": "60030365",
-    "codigoEmpresa": "003",
-    "observacion": "keiniu",
-    "sectorDerivado": "0",
-    "fechaAlta": "2017-03-18T14:43:53.111-05:00",
-    "usuarioDerivado": "cusi",
-    "sucursalAlta": "ojerabef",
+    "estado": "Activo",
+    "fechaAlta": "2017-03-18",
+    "usuarioDerivado": "jcortez",
+    "sucursalAlta": "callcenter",
     "codigoAplicativo": "BPI",
-    "tipoDocumentoIdentidad": "01",
-    "numeroDocumentoIdentidad": "64004505",
-    "nombreCliente": "ALONZO",
-    "apellidoCliente": "VALVERDE DIAZ",
-    "detalleProductos": "jinfemz",
-    "detalleCampos": "balel"
+    "detalle": "Detalle del reclamo"
 }
