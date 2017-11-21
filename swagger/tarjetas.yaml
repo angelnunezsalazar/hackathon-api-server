@@ -1,0 +1,163 @@
+swagger: '2.0'
+info:
+  title: API Tarjetas de Crédito
+  description: |-
+    API que se encarga de crear una tarjeta de credito para un cliente titular. A la tarjeta se le coloca la marca tipo, moneda, importe de Linea, etc
+    <strong>Ejemplo de uso:</strong> Se ha utilizado esta API para la venta digital de tarjetas de credito, en donde se ha tenido alcance para clientes y no clientes del banco, ofreciendo campañas personalizadas con una pre-evaluación a los clientes
+
+    <strong>Parametros Entrada:</strong> Código Unico, cóigo de Marca, Tipo, Linea de Credito, dia pago, etc.
+    <strong>Parametros Salida:</strong> Código Unico, Número Tarjeta, Número Cuenta, fecha Alta, fecha Vencimiento
+  version: 1.0.0
+  x-ibm-name: ms-altatarjeta
+host: altatarjeta-UAT.interbankclouduat.pe
+basePath: /ms
+paths:
+  /tarjetas:
+    post:
+      summary: Registrar una nueva tarjeta
+      parameters:
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/Tarjeta'
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/CrearTarjetaResponse'
+  '/tarjetas/{numeroTarjeta}':
+    get:
+      summary: "Retorna los datos de una tarjeta'."
+      parameters:
+        - name: numeroTarjeta
+          in: path
+          required: true
+          description: Número de la Cuenta.
+          type: string
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/Tarjeta'
+  '/clientes/{codigoUnicoCliente}/tarjetas':
+    get:
+      summary: Retorna todas las tarjetas de un cliente'.
+      parameters:
+        - name: codigoUnicoCliente
+          in: path
+          required: true
+          description: Código Único del cliente
+          type: string
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Tarjeta'
+definitions:
+  Tarjeta:
+    type: object
+    required:
+      - codigoUnicoCliente
+      - codigoMarca
+      - codigoMoneda
+      - importeLinea
+      - diaPago
+      - nombrePlastico
+    properties:
+      codigoUnicoCliente:
+        type: string
+        example: '0060059893'
+      codigoMarca:
+        type: string
+        example: '02'
+      codigoMoneda:
+        type: string
+        example: '001'
+      importeLinea:
+        type: string
+        example: '8000.00'
+      diaPago:
+        type: string
+        example: '05'
+      nombrePlastico:
+        type: string
+        example: 'PAOLO MARTEL'
+  CrearTarjetaResponse:
+    type: object
+    properties:
+      numeroTarjeta:
+        type: string
+        example: '1245686947573444'
+      numeroCuenta:
+        type: string
+        example: '1007000500767'
+      fechaAlta:
+        type: string
+        example: '2017-10-25'
+      fechaVencimiento:
+        type: string
+        example: '2022-10-01'
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: post
+                  path: /tarjetas
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas'
+            - operations:
+                - verb: get
+                  path: '/tarjetas/{numeroTarjeta}'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas/{numeroTarjeta}'
+            - operations:
+                - verb: get
+                  path: '/clientes/{codigoUnicoCliente}/tarjetas'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/{codigoUnicoCliente}/tarjetas'
+          otherwise: []
+          version: 1.0.0
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - SecureID: []

@@ -1,13 +1,8 @@
 {
     "codigoUnicoCliente": "0060059893",
     "codigoMarca": "02",
-    "codigoMoneda": "1",
+    "codigoMoneda": "001",
     "importeLinea": "8000.00",
     "diaPago": "05",
-    "nombrePlastico": "PAOLO*MARTEL",
-    "importeLineaAdicional": "8000.00",
-    "porcentajeLineaAdicional": "10",
-    "importeDisponibleEfectivoTitular": "",
-    "porcentajeDisponibleEfectivoTitular": "",
-    "indicadorDevolucionCashback": "0"
+    "nombrePlastico": "PAOLO MARTEL"
 }

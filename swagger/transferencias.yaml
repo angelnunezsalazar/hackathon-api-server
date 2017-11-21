@@ -36,7 +36,7 @@ definitions:
       - monedaAbono
       - importeAbono
       - tipoCambio
-      - glosaDinamica
+      - glosa
     properties:
       numeroCuentaCargo:
         type: string
@@ -52,7 +52,7 @@ definitions:
         example: '1007000219430'
       monedaAbono:
         type: string
-        example: '010'
+        example: '001'
       importeAbono:
         type: string
         example: '60.00'
