@@ -15,7 +15,7 @@ info:
 host: "crearcliente-UAT.interbankclouduat.pe"
 basePath: "/ms"
 paths:
-  /crearcliente:
+  /clientes:
     post:
       parameters:
       - in: "body"
@@ -26,19 +26,9 @@ paths:
           $ref: "#/definitions/MessageRequest"
       responses:
         200:
-          description: "Conexion exitosa / Error tipo 01: Contraseña incorrecta en\
-            \ la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio\
-            \ o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el\
-            \ Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error\
-            \ tipo 05: No se ingresa un dato obligatorio o formato incorrecto."
+          description: "Conexion exitosa"
           schema:
             $ref: "#/definitions/MessageResponse"
-        401:
-          description: "Acceso no autorizado"
-        404:
-          description: "Ruta no encontrada"
-        500:
-          description: "Error interno del servicio. Favor intente luego"
 definitions:
   MessageRequest:
     type: "object"

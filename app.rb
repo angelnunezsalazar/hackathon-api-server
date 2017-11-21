@@ -75,7 +75,30 @@ post '/transferencia' do
     return {"numOperacion" => rand.to_s[2..8]}.to_json
 end 
 
-post '/altatarjeta' do
+get '/clientes/:codigoUnicoCliente/tarjetas' do
+    tarjeta = Tarjeta.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    tarjeta_hash = tarjeta.map { |t| 
+        tarjeta=JSON.parse(t.json)
+        tarjeta["numeroTarjeta"]=t.numero_tarjeta
+        tarjeta["numeroCuenta"]=t.numero_cuenta
+        tarjeta["fechaAlta"]=t.fecha_alta
+        tarjeta["fechaVencimiento"]=t.fecha_vencimiento
+        tarjeta
+    }
+    return tarjeta_hash.to_json
+end
+
+get '/tarjetas/:numeroTarjeta' do
+    tarjeta = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
+    tarjeta_hash=JSON.parse(tarjeta.json)
+    tarjeta_hash["numeroTarjeta"]=tarjeta.numero_tarjeta
+    tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
+    tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
+    tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
+    return tarjeta_hash.to_json
+end
+
+post '/tarjetas' do
     payload = JSON.parse(request.body.read)  
     tarjeta=Tarjeta.new
     tarjeta.codigo_unico_cliente=payload['codigoUnicoCliente']
@@ -85,8 +108,8 @@ post '/altatarjeta' do
     tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
     tarjeta.json=payload.to_json
     tarjeta.save
-    return {"numeroTarjeta" => tarjeta.numero_cuenta,
-            "numeroCuenta" => tarjeta.numero_tarjeta,
+    return {"numeroTarjeta" => tarjeta.numero_tarjeta,
+            "numeroCuenta" => tarjeta.numero_cuenta,
             "fechaAlta" => tarjeta.fecha_alta,
             "fechaVencimiento" => tarjeta.fecha_vencimiento}.to_json
 end
