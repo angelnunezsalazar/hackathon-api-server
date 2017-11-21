@@ -1,6 +1,6 @@
 {
     "codigoUnicoCliente": "0060059893",
-    "identificadorProceso": "1",
+    "identificadorProceso": "1",//interno
     "codigoMarca": "02",
     "codigoMoneda": "1",
     "importeLinea": "8000.00",

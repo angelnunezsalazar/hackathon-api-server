@@ -18,9 +18,8 @@ paths:
       - name: "numeroDocumento"
         in: "query"
         required: true
-        description: "Número de documento del cliente"
+        description: "Número de documento del cliente. Ejemplo '0075450500'"
         type: "string"
-        x-example: "02683919"
       responses:
         200:
           description: "Conexion exitosa / Error tipo 01: Contraseña incorrecta en\

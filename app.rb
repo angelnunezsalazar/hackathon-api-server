@@ -7,13 +7,19 @@ get '/' do
     return "Hackathon API Server running!"
 end
 
-get '/obtenerdatoscliente' do
+get '/clientes' do
     numero_documento = params['numeroDocumento']
     cliente = Cliente.find_by(numero_documento: numero_documento)
     return cliente.json
 end
 
-post '/crearcliente' do
+get '/clientes/:codigoUnico' do
+    codigo_unico = params['codigoUnico']
+    cliente = Cliente.find_by(codigo_unico: codigo_unico)
+    return cliente.json
+end
+
+post '/clientes' do
     payload = JSON.parse(request.body.read)
     cliente=Cliente.new
     cliente.numero_documento=payload['numeroDocumento']
@@ -23,9 +29,8 @@ post '/crearcliente' do
     return {:codigoUnicoCliente => cliente.codigo_unico}.to_json
 end
 
-get '/consultarsaldos' do
-    cuentas = Cuenta.where(codigo_unico_cliente: params['codigoUnicoCliente']) if params.has_key?('codigoUnicoCliente')
-    cuentas = Cuenta.where(numero_cuenta: params['numeroCuenta']) if params.has_key?('numeroCuenta')
+get '/clientes/:codigoUnicoCliente/cuentas' do
+    cuentas = Cuenta.where(codigo_unico_cliente: params['codigoUnicoCliente'])
     cuentas_hash = cuentas.map { |c| 
         cuenta=JSON.parse(c.json)
         cuenta["numeroCuenta"]=c.numero_cuenta
@@ -36,7 +41,16 @@ get '/consultarsaldos' do
     return cuentas_hash.to_json
 end
 
-post '/crearcuenta' do
+get '/cuentas/:numeroCuenta' do
+    cuenta = Cuenta.find_by(numero_cuenta: params['numeroCuenta'])
+    cuenta_hash=JSON.parse(cuenta.json)
+    cuenta_hash["numeroCuenta"]=cuenta.numero_cuenta
+    cuenta_hash["saldoContable"]=cuenta.saldo
+    cuenta_hash["saldoDisponible"]=cuenta.saldo
+    return cuenta_hash.to_json
+end
+
+post '/cuentas' do
     payload = JSON.parse(request.body.read)  
     cuenta=Cuenta.new
     cuenta.codigo_unico_cliente=payload['codigoUnicoCliente']

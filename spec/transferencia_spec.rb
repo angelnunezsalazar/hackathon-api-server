@@ -16,7 +16,10 @@ describe 'API Transferencia' do
     post "/transferencia", request
     expect_json_keys([:numOperacion])
 
-    get "/consultarsaldos?codigoUnicoCliente=#{codigo_unico}"
+    saldo1=consultar_saldo(cuenta_1[:numeroCuenta])
+    expect(saldo1).to eql('100.0')
+    saldo2=consultar_saldo(cuenta_2[:numeroCuenta])
+    expect(saldo2).to eql('-100.0')
   end
 
 end
@@ -28,6 +31,11 @@ def generar_request_cuenta(codigo_unico)
 end
 
 def crear_cuenta(request)
-  post '/crearcuenta', request
+  post '/cuentas', request
   return json_body
+end
+
+def consultar_saldo(numero_cuenta)
+  get "/cuentas/#{numero_cuenta}"
+  return json_body[:saldoDisponible]
 end

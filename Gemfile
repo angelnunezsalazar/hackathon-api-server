@@ -9,6 +9,8 @@ gem 'json'
 gem "activerecord"
 gem 'rspec', '3.5.0'
 gem 'rake'
+gem 'rest-client'
+gem 'factory-helper'
 
 group :development do
  gem 'sqlite3'
