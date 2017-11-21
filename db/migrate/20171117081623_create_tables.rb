@@ -27,5 +27,11 @@ class CreateTables < ActiveRecord::Migration[5.1]
 			t.string  "numero_reclamo"
 		    t.string  "json"
 		end
+
+		create_table "movimientos", :force => true do |t|
+			t.string  "numero_tarjeta"
+			t.string  "numeroMovimiento"
+		    t.string  "json"
+		end
 	end
 end
