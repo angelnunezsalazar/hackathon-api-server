@@ -26,7 +26,6 @@ Instrucciones
 - Limpiar la data
 	$ heroku run rake db:migrate VERSION=0 --app hackathon-api-server
 	$ heroku run rake db:migrate --app hackathon-api-server
-	$ heroku run rake db:seed --app hackathon-api-server
 
 - Ver los logs
 
