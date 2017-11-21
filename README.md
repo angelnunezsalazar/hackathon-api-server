@@ -5,7 +5,13 @@ Ambiente de Trabajo Windows
 
 - Descargar Ruby para Windows: ruby-2.3.3 o ruby-2.3.4
 
--
+- Descargar el código fuente
+https://github.com/snahider/hackathon-api-server
+
+- Descargar Heroku CLI
+
+- Descargar 'bundler' (gestor de paquetes de ruby)
+	gem install bundler
 
 Instrucciones
 -----------------
@@ -24,9 +30,14 @@ Instrucciones
 	$ heroku run rake db:migrate --app hackathon-api-server
 
 - Limpiar la data
-	$ heroku run rake db:migrate VERSION=0 --app hackathon-api-server
+	$ heroku run rake db:clear --app hackathon-api-server
 	$ heroku run rake db:migrate --app hackathon-api-server
 
 - Ver los logs
 
 	$ heroku logs --app hackathon-api-server
+
+Postgresql
+------------------
+Consultar todas las tablas
+	"SELECT table_name FROM information_schema.tables WHERE table_schema='public'"

@@ -7,15 +7,15 @@ get '/' do
     return "Hackathon API Server running!"
 end
 
-get '/clientes' do
-    numero_documento = params['numeroDocumento']
-    cliente = Cliente.find_by(numero_documento: numero_documento)
-    return cliente.json
-end
-
 get '/clientes/:codigoUnico' do
     codigo_unico = params['codigoUnico']
     cliente = Cliente.find_by(codigo_unico: codigo_unico)
+    return cliente.json
+end
+
+get '/clientes' do
+    numero_documento = params['numeroDocumento']
+    cliente = Cliente.find_by(numero_documento: numero_documento)
     return cliente.json
 end
 
@@ -29,6 +29,15 @@ post '/clientes' do
     return {:codigoUnicoCliente => cliente.codigo_unico}.to_json
 end
 
+get '/cuentas/:numeroCuenta' do
+    cuenta = Cuenta.find_by(numero_cuenta: params['numeroCuenta'])
+    cuenta_hash=JSON.parse(cuenta.json)
+    cuenta_hash["numeroCuenta"]=cuenta.numero_cuenta
+    cuenta_hash["saldoContable"]=cuenta.saldo
+    cuenta_hash["saldoDisponible"]=cuenta.saldo
+    return cuenta_hash.to_json
+end
+
 get '/clientes/:codigoUnicoCliente/cuentas' do
     cuentas = Cuenta.where(codigo_unico_cliente: params['codigoUnicoCliente'])
     cuentas_hash = cuentas.map { |c| 
@@ -39,15 +48,6 @@ get '/clientes/:codigoUnicoCliente/cuentas' do
         cuenta
     }
     return cuentas_hash.to_json
-end
-
-get '/cuentas/:numeroCuenta' do
-    cuenta = Cuenta.find_by(numero_cuenta: params['numeroCuenta'])
-    cuenta_hash=JSON.parse(cuenta.json)
-    cuenta_hash["numeroCuenta"]=cuenta.numero_cuenta
-    cuenta_hash["saldoContable"]=cuenta.saldo
-    cuenta_hash["saldoDisponible"]=cuenta.saldo
-    return cuenta_hash.to_json
 end
 
 post '/cuentas' do
@@ -75,6 +75,16 @@ post '/transferencia' do
     return {"numOperacion" => rand.to_s[2..8]}.to_json
 end 
 
+get '/tarjetas/:numeroTarjeta' do
+    tarjeta = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
+    tarjeta_hash=JSON.parse(tarjeta.json)
+    tarjeta_hash["numeroTarjeta"]=tarjeta.numero_tarjeta
+    tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
+    tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
+    tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
+    return tarjeta_hash.to_json
+end
+
 get '/clientes/:codigoUnicoCliente/tarjetas' do
     tarjeta = Tarjeta.where(codigo_unico_cliente: params['codigoUnicoCliente'])
     tarjeta_hash = tarjeta.map { |t| 
@@ -85,16 +95,6 @@ get '/clientes/:codigoUnicoCliente/tarjetas' do
         tarjeta["fechaVencimiento"]=t.fecha_vencimiento
         tarjeta
     }
-    return tarjeta_hash.to_json
-end
-
-get '/tarjetas/:numeroTarjeta' do
-    tarjeta = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
-    tarjeta_hash=JSON.parse(tarjeta.json)
-    tarjeta_hash["numeroTarjeta"]=tarjeta.numero_tarjeta
-    tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
-    tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
-    tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
     return tarjeta_hash.to_json
 end
 

@@ -17,7 +17,7 @@ basePath: "/ms"
 paths:
   /clientes:
     get:
-      summary: "Obtiene un cliente dado su 'Numero de Documento'"
+      summary: "Retorna un cliente dado su 'Numero de Documento'"
       parameters:
       - name: "numeroDocumento"
         in: "query"
@@ -45,6 +45,7 @@ paths:
             $ref: "#/definitions/CrearClienteResponse"
   /clientes/{codigoUnico}:
     get:
+      summary: "Retorna un cliente"
       parameters:
       - name: "codigoUnico"
         in: "path"
@@ -206,7 +207,7 @@ x-ibm-configuration:
         cache-ttl: 900
         version: "1.0.0"
         description: "Service"
-        target-url: "https://hackathon-api-server.herokuapp.com/crearcliente"
+        target-url: "https://hackathon-api-server.herokuapp.com/clientes"
     catch: []
 securityDefinitions:
   SecureID:
