@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
     t.string "numero_tarjeta"
     t.string "fecha_alta"
     t.string "fecha_vencimiento"
+    t.string "saldo"
     t.string "json"
   end
 

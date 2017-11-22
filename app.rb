@@ -142,7 +142,7 @@ post '/reclamos' do
     payload = JSON.parse(request.body.read)  
     reclamo = Reclamo.new
     reclamo.codigo_unico_cliente=payload['codigoUnicoCliente']
-    reclamo.numero_reclamo = rand.to_s[1..20]
+    reclamo.numero_reclamo = rand.to_s[1..15]
     reclamo.json=payload.to_json
     reclamo.save
     return {"numeroReclamo" => reclamo.numero_reclamo}.to_json
