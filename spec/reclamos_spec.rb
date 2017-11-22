@@ -28,7 +28,7 @@ describe 'API Reclamos' do
     it 'retorna 404 si el reclamo no existe' do
         get "/reclamos/0011223344"
         expect_status(404)
-        expect_json_keys([:error])
+        expect_json_keys([:message])
     end
 end
   

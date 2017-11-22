@@ -9,13 +9,13 @@ end
 
 get '/clientes/:codigoUnico' do
     cliente = Cliente.find_by(codigo_unico: params['codigoUnico'])
-    halt 404, { :error => "Cliente no existe" }.to_json unless cliente.present?
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     return cliente.json
 end
 
 get '/clientes' do
     cliente = Cliente.find_by(numero_documento: params['numeroDocumento'])
-    halt 404, { :error => "Cliente no existe" }.to_json unless cliente.present?
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     return cliente.json
 end
 
@@ -31,7 +31,7 @@ end
 
 get '/cuentas/:numeroCuenta' do
     cuenta = Cuenta.find_by(numero_cuenta: params['numeroCuenta'])
-    halt 404, { :error => "Cuenta no existe" }.to_json unless cuenta.present?
+    halt 404, { :message => "Cuenta no existe" }.to_json unless cuenta.present?
     cuenta_hash=JSON.parse(cuenta.json)
     cuenta_hash["numeroCuenta"]=cuenta.numero_cuenta
     cuenta_hash["saldoContable"]=cuenta.saldo
@@ -79,7 +79,7 @@ end
 
 get '/tarjetas/:numeroTarjeta' do
     tarjeta = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
-    halt 404, { :error => "Tarjeta no existe" }.to_json unless tarjeta.present?
+    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
     tarjeta_hash=JSON.parse(tarjeta.json)
     tarjeta_hash["numeroTarjeta"]=tarjeta.numero_tarjeta
     tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
@@ -129,7 +129,7 @@ end
 
 get '/reclamos/:numeroReclamo' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
-    halt 404, { :error => "Reclamo no existe" }.to_json unless reclamo.present?
+    halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
     reclamo_hash=JSON.parse(reclamo.json)
     reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
     return reclamo_hash.to_json

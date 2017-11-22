@@ -41,7 +41,7 @@ describe 'API AltaTarjeta' do
   it 'retorna 404 si la tarjeta no existe' do
     get "/tarjetas/0011223344"
     expect_status(404)
-    expect_json_keys([:error])
+    expect_json_keys([:message])
   end
 end
 

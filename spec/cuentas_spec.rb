@@ -38,7 +38,7 @@ describe 'API CrearCuenta' do
   it 'retorna 404 si la cuenta no existe' do
     get "/cuentas/0011223344"
     expect_status(404)
-    expect_json_keys([:error])
+    expect_json_keys([:message])
   end
 
 end

@@ -28,11 +28,11 @@ describe 'API Cliente' do
   it 'retorna 404 si el cliente no existe' do
     get "/clientes/0011223344"
     expect_status(404)
-    expect_json_keys([:error])
+    expect_json_keys([:message])
 
     get "/clientes?numeroDocumento=11223344"
     expect_status(404)
-    expect_json_keys([:error])
+    expect_json_keys([:message])
   end
 end
 
