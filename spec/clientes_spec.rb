@@ -25,11 +25,15 @@ describe 'API Cliente' do
     expect(json_body).not_to be_empty
   end
 
-  #it 'retorna error cliente no existe'
-  #it 'consultar con código unico'
-  #it 'consultar con tipo documento'
+  it 'retorna 404 si el cliente no existe' do
+    get "/clientes/0011223344"
+    expect_status(404)
+    expect_json_keys([:message])
 
-  #it 'retorna el codigo del cliente'
+    get "/clientes?numeroDocumento=11223344"
+    expect_status(404)
+    expect_json_keys([:message])
+  end
 end
 
 def generar_request_crearcliente(data)

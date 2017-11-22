@@ -8,14 +8,14 @@ get '/' do
 end
 
 get '/clientes/:codigoUnico' do
-    codigo_unico = params['codigoUnico']
-    cliente = Cliente.find_by(codigo_unico: codigo_unico)
+    cliente = Cliente.find_by(codigo_unico: params['codigoUnico'])
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     return cliente.json
 end
 
 get '/clientes' do
-    numero_documento = params['numeroDocumento']
-    cliente = Cliente.find_by(numero_documento: numero_documento)
+    cliente = Cliente.find_by(numero_documento: params['numeroDocumento'])
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     return cliente.json
 end
 
@@ -31,6 +31,7 @@ end
 
 get '/cuentas/:numeroCuenta' do
     cuenta = Cuenta.find_by(numero_cuenta: params['numeroCuenta'])
+    halt 404, { :message => "Cuenta no existe" }.to_json unless cuenta.present?
     cuenta_hash=JSON.parse(cuenta.json)
     cuenta_hash["numeroCuenta"]=cuenta.numero_cuenta
     cuenta_hash["saldoContable"]=cuenta.saldo
@@ -40,6 +41,7 @@ end
 
 get '/clientes/:codigoUnicoCliente/cuentas' do
     cuentas = Cuenta.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    puts cuentas
     cuentas_hash = cuentas.map { |c| 
         cuenta=JSON.parse(c.json)
         cuenta["numeroCuenta"]=c.numero_cuenta
@@ -77,6 +79,7 @@ end
 
 get '/tarjetas/:numeroTarjeta' do
     tarjeta = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
+    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
     tarjeta_hash=JSON.parse(tarjeta.json)
     tarjeta_hash["numeroTarjeta"]=tarjeta.numero_tarjeta
     tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
@@ -127,6 +130,7 @@ end
 
 get '/reclamos/:numeroReclamo' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
+    halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
     reclamo_hash=JSON.parse(reclamo.json)
     reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
     reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
