@@ -25,6 +25,12 @@ ActiveRecord::Schema.define(version: 20171117081623) do
     t.string "json"
   end
 
+  create_table "movimientos", force: :cascade do |t|
+    t.string "numero_tarjeta"
+    t.string "numeroMovimiento"
+    t.string "json"
+  end
+
   create_table "reclamos", force: :cascade do |t|
     t.string "codigo_unico_cliente"
     t.string "numero_reclamo"

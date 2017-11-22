@@ -38,6 +38,11 @@ describe 'API AltaTarjeta' do
     expect_json_keys([:numeroCuenta])
   end
 
+  it 'retorna 404 si la tarjeta no existe' do
+    get "/tarjetas/0011223344"
+    expect_status(404)
+    expect_json_keys([:error])
+  end
 end
 
 def generar_request_tarjeta(codigo_unico)

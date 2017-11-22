@@ -34,6 +34,13 @@ describe 'API CrearCuenta' do
     expect(json_body[:saldoDisponible]).to eql('0.0')
     expect(json_body[:saldoContable]).to eql('0.0')
   end
+
+  it 'retorna 404 si la cuenta no existe' do
+    get "/cuentas/0011223344"
+    expect_status(404)
+    expect_json_keys([:error])
+  end
+
 end
 
 def generar_request_cuenta(codigo_unico)

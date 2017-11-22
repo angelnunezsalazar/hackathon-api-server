@@ -23,7 +23,13 @@ describe 'API Reclamos' do
         crear_reclamo(request)
         get "/clientes/#{codigo_unico}/reclamos"
         expect(json_body.length).to eql(2)
-      end
+    end
+
+    it 'retorna 404 si el reclamo no existe' do
+        get "/reclamos/0011223344"
+        expect_status(404)
+        expect_json_keys([:error])
+    end
 end
   
 def generar_request(codigo_unico)
