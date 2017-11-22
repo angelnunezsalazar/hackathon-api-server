@@ -109,13 +109,14 @@ post '/tarjetas' do
     tarjeta.numero_cuenta=rand.to_s[2..14]
     tarjeta.fecha_alta=Time.now.strftime("%Y-%m-%d")
     tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
-    tarjeta.saldo=2000
+    tarjeta.saldoDisponible=payload['importeLinea']
     tarjeta.json=payload.to_json
     tarjeta.save
     return {"numeroTarjeta" => tarjeta.numero_tarjeta,
             "numeroCuenta" => tarjeta.numero_cuenta,
             "fechaAlta" => tarjeta.fecha_alta,
-            "fechaVencimiento" => tarjeta.fecha_vencimiento}.to_json
+            "fechaVencimiento" => tarjeta.fecha_vencimiento,
+            "saldoDisponible" => tarjeta.saldoDisponible}.to_json
 end
 
 get '/clientes/:codigoUnicoCliente/reclamos' do
