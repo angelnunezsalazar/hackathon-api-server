@@ -128,6 +128,19 @@ x-ibm-configuration:
                     description: Service
                     target-url: 'https://hackathon-api-server.herokuapp.com/reclamos/{numeroReclamo}'
             - operations:
+                - verb: post
+                  path: '/reclamos/{numeroReclamo}/abonar'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/reclamos/{numeroReclamo}/abonar'
+            - operations:
                 - verb: get
                   path: '/clientes/{codigoUnicoCliente}/reclamos'
               execute:
