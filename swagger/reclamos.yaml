@@ -1,10 +1,10 @@
 swagger: '2.0'
 info:
   title: API FichaReclamo
-  description: "Deja un reclamo en el Sistema de Telesoft, este documento es la evidencia de una solicitud y/o reclamo de un cliente del banco.\n<strong>Ejemplo de uso:</strong> al habilitar una tarjeta para compras por internet o viajes al exterior, esto deja una solicitud (ficha).\n<strong>Parametros entrada:</strong> tipo,subtipo,circuito - categoría de la ficha. codigoCliente,codigoEmpresa - identificación del solicitante. \n<strong>Parametros salida:</strong> numeroReclamo - id del reclamo generado."
+  description: "Permite gestionar reclamos en el Sistema de Telesoft, este documento es la evidencia de una solicitud y/o reclamo de un cliente del banco.\n<strong>Ejemplo de uso:</strong> al habilitar una tarjeta para compras por internet o viajes al exterior, esto deja una solicitud (ficha).\n<strong>Parametros entrada:</strong> tipo,subtipo,circuito - categoría de la ficha. codigoCliente,codigoEmpresa - identificación del solicitante. \n<strong>Parametros salida:</strong> numeroReclamo - id del reclamo generado."
   version: 1.0.0
   x-ibm-name: ms-generacionfichareclamo
-host: 'kafka04-prod01.messagehub.services.us-south.bluemix.net:9093'
+host: 'gestionarReclamos-UAT.interbankclouduat.pe'
 basePath: /ms
 paths:
   /reclamos:
@@ -63,7 +63,7 @@ definitions:
     properties:
       codigoUnicoCliente:
         type: string
-        example: '60030365'
+        example: '0060030365'
       tipo:
         type: string
         example: '272'
@@ -72,28 +72,18 @@ definitions:
         example: '134'
       estado:
         type: string
-      codigoEmpresa:
+        example: 'PENDIENTE'
+      descripcion:
         type: string
-        example: '003'
-      observacion:
-        type: string
-      sectorDerivado:
-        type: string
-        example: '0'
+        example: 'Al cliente no le llego el estado de cuenta del banco por 2 meses'
       fechaAlta:
         type: string
-        example: '2017-03-18'
+        example: '2017-11-10'
       usuarioDerivado:
-        type: string
-      sucursalAlta:
         type: string
       codigoAplicativo:
         type: string
-        example: BPI
-      detalleProductos:
-        type: string
-      detalleCampos:
-        type: string
+        example: 'POSTVENTA'
   CrearFichaReclamoResponse:
     type: object
     properties:

@@ -106,6 +106,7 @@ post '/tarjetas' do
     tarjeta.numero_cuenta=rand.to_s[2..14]
     tarjeta.fecha_alta=Time.now.strftime("%Y-%m-%d")
     tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
+    tarjeta.saldoDisponible=(Time.now+5.years).strftime("%Y-%m-%d")
     tarjeta.json=payload.to_json
     tarjeta.save
     return {"numeroTarjeta" => tarjeta.numero_tarjeta,
@@ -128,6 +129,7 @@ get '/reclamos/:numeroReclamo' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
     reclamo_hash=JSON.parse(reclamo.json)
     reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
+    reclamo_hash["numeroReclamo"]=reclamo.numero_reclamo
     return reclamo_hash.to_json
 end
 
@@ -144,4 +146,23 @@ end
 get '/tarjetas/:numeroTarjeta/movimientos' do
     request = JSON.parse(File.read('payloads/consultarmovimientos_response.json'))
     return request.to_json
+end
+
+post '/reclamos/:numeroReclamo/abonar' do
+    #ABONO: tarjetaAbono, importeAbono
+    payload = JSON.parse(request.body.read)
+    puts payload
+    # obtengo el reclamo y actualizo a PAGADO
+    reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
+    reclamo_hash=JSON.parse(reclamo.json)
+    reclamo_hash["estado"]="PAGADO"
+    # obtengo la tarjeta y actualizo SALDO disponible de la TC 
+    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: payload['tarjetaAbono'])
+    tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_i
+
+    tarjeta_abono.transaction do
+        tarjeta_abono.save
+        reclamo.save
+    end
+    return {"resultado" => "monto abonado"}.to_json
 end

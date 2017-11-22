@@ -19,6 +19,7 @@ class CreateTables < ActiveRecord::Migration[5.1]
 			t.string  "numero_tarjeta"
 			t.string  "fecha_alta"
 			t.string  "fecha_vencimiento"
+			t.decimal  "saldo", precision: 10, scale: 3
 			t.string  "json"
 		end
 

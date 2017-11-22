@@ -4,8 +4,8 @@ info:
   description: |-
     API que sirve para crear cliente en sistema de RM. RM es el sistema principal del banco en donde se guarda los codigos internos de cada cliente ( Código Unico)
     <strong>Ejemplo de uso:</strong> Lo usamos en todos los procesos se necesite crear un cliente , como antes de crear una cuenta o tarjeta si el cliente no existe primero usamos el API de crear cliente y luego seguimos con el flujo.
-    <strong>Parametros Entrada:</strong> Datos personales del cliente, nombre, fecha nacimiento, dirección , etc
-    <strong>Parametros Salida:</strong> Código Unico del cliente
+    <strong>Parametros Entrada:</strong> Dni y/o datos personales del cliente, nombre, apellidos, dirección
+    <strong>Parametros Salida:</strong> Código Unico del cliente, información del cliente
   version: 1.0.0
   x-ibm-name: ms-crearcliente
 host: crearcliente-UAT.interbankclouduat.pe
