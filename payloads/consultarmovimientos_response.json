@@ -1,5 +1,5 @@
 [{
-    "numeroMovimiento": "1",
+    "numeroMovimiento": "999001",
     "monedaMovimiento": "010",
     "fechaFactura": "2017-11-15",
     "fechaProceso": "2017-11-15",
@@ -8,7 +8,7 @@
     "nombreComercioReducido": "COMPRA ELECTRO",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "2",
+    "numeroMovimiento": "999002",
     "monedaMovimiento": "",
     "fechaFactura": "2017-11-14",
     "fechaProceso": "2017-11-15",
@@ -17,7 +17,7 @@
     "nombreComercioReducido": "DISP EFECT CAJERO",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "3",
+    "numeroMovimiento": "999003",
     "fechaFactura": "2017-11-15",
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
@@ -25,7 +25,7 @@
     "nombreComercioReducido": "COMPRAS ELECTRO",
     "indicadorConversionCuotas": "false"
   }, {
-    "numeroMovimiento": "4",
+    "numeroMovimiento": "999004",
     "monedaMovimiento": "010",
     "fechaFactura": "2017-11-14",
     "fechaProceso": "2017-11-15",
@@ -34,7 +34,7 @@
     "nombreComercioReducido": "COMPRAS ALIMENTOS",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "5",
+    "numeroMovimiento": "999005",
     "monedaMovimiento": "001",
     "fechaFactura": "2017-11-14",
     "fechaProceso": "2017-11-15",
@@ -43,7 +43,7 @@
     "nombreComercioReducido": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "6",
+    "numeroMovimiento": "999006",
     "monedaMovimiento": "010",
     "fechaFactura": "2017-11-15",
     "fechaProceso": "2017-11-15",
@@ -52,7 +52,7 @@
     "nombreComercioReducido": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "7",
+    "numeroMovimiento": "999007",
     "monedaMovimiento": "001",
     "fechaFactura": "2017-11-13",
     "fechaProceso": "2017-11-15",
@@ -61,7 +61,7 @@
     "nombreComercioReducido": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
-    "numeroMovimiento": "8",
+    "numeroMovimiento": "999008",
     "monedaMovimiento": "010",
     "fechaFactura": "2017-11-14",
     "fechaProceso": "2017-11-15",

@@ -1,7 +1,11 @@
 swagger: '2.0'
 info:
   title: API FichaReclamo
-  description: "Permite gestionar reclamos en el Sistema de Telesoft, este documento es la evidencia de una solicitud y/o reclamo de un cliente del banco.\n<strong>Ejemplo de uso:</strong> al habilitar una tarjeta para compras por internet o viajes al exterior, esto deja una solicitud (ficha).\n<strong>Parametros entrada:</strong> tipo,subtipo,circuito - categoría de la ficha. codigoCliente,codigoEmpresa - identificación del solicitante. \n<strong>Parametros salida:</strong> numeroReclamo - id del reclamo generado."
+  description:  |-
+    Permite gestionar reclamos en el Sistema de Telesoft, este documento es la evidencia de una solicitud y/o reclamo de un cliente del banco.\n<strong>Ejemplo de uso:</strong> al habilitar una tarjeta para compras por internet o viajes al exterior, esto deja una solicitud (ficha).
+
+    <strong>Parametros entrada:</strong> tipo,subtipo,circuito - categoría de la ficha. codigoCliente,codigoEmpresa - identificación del solicitante.
+    <strong>Parametros salida:</strong> numeroReclamo - id del reclamo generado.
   version: 1.0.0
   x-ibm-name: ms-generacionfichareclamo
 host: 'gestionarReclamos-UAT.interbankclouduat.pe'

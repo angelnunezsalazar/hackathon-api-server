@@ -85,7 +85,7 @@ get '/tarjetas/:numeroTarjeta' do
     tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
     tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
     tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
-    tarjeta_hash["saldo"]=tarjeta.saldo
+    tarjeta_hash["importeLinea"]=tarjeta.saldo
     return tarjeta_hash.to_json
 end
 
@@ -155,7 +155,7 @@ get '/tarjetas/:numeroTarjeta/movimientos' do
 end
 
 post '/reclamos/:numeroReclamo/abonar' do
-    #ABONO: tarjetaAbono, importeAbono
+    # RQ: tarjetaAbono, importeAbono
     payload = JSON.parse(request.body.read)
     puts payload
     # obtengo el reclamo y actualizo a PAGADO
@@ -173,4 +173,47 @@ post '/reclamos/:numeroReclamo/abonar' do
         reclamo.save
     end
     return {"resultado" => "monto abonado"}.to_json
+end
+
+post '/pasecuotas' do
+    # REQ: tarjeta, cuotas, monto
+    payload = JSON.parse(request.body.read)
+    puts payload
+    # obtengo la tarjeta y actualizo SALDO disponible de la TC
+    tarjeta = Tarjeta.find_by(numero_tarjeta: payload['tarjeta'])
+    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
+    tarjeta.saldo= (tarjeta.saldo - payload['monto'].to_i)
+
+    pase_hash=JSON.new
+    pase_hash["totalCuotas"] = payload['cuotas']
+    pase_hash["importeCuota"] = payload['monto'].to_i / payload['cuotas'].to_i
+    pase_hash["fechaFacturacion"] = (Time.now + 1.months).strftime("%Y-%m-%d")
+    pase_hash["interesAnual"] = "13.100"
+    pase_hash["saldoDisponible"] = tarjeta.saldo
+
+    # se guarda por adelantado el movimiento
+    movimiento = Movimientos.new
+    movimiento.numero_tarjeta = payload['tarjeta']
+    movimiento.numero_movimiento = rand.to_s[2..10]
+    movimiento.json = pase_hash.to_json
+
+    movimiento.transacion do
+        tarjeta.save
+        movimiento.save
+    end
+ 
+    return pase_hash.to_json
+end
+
+get '/pasecuotas/:numeroTarjeta/lista' do
+    movimientos = Movimiento.where(numero_tarjeta: params['numeroTarjeta'])
+    puts movimientos
+    movs_hash = movimientos.map { |c| 
+        movs=JSON.parse(c.json)
+        movs["importeCuota"]=c.importeCuota
+        movs["fechaFacturacion"]=c.fechaFacturacion
+        movs["interesAnual"]=c.interesAnual
+        movs
+    }
+    return movs_hash.to_json
 end
