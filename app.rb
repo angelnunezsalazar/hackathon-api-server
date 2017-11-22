@@ -158,10 +158,12 @@ post '/reclamos/:numeroReclamo/abonar' do
     puts payload
     # obtengo el reclamo y actualizo a PAGADO
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
+    halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
     reclamo_hash=JSON.parse(reclamo.json)
     reclamo_hash["estado"]="PAGADO"
     # obtengo la tarjeta y actualizo SALDO disponible de la TC 
     tarjeta_abono = Tarjeta.find_by(numero_tarjeta: payload['tarjetaAbono'])
+    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta_abono.present?
     tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_i
 
     tarjeta_abono.transaction do
