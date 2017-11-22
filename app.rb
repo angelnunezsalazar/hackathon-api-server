@@ -85,6 +85,7 @@ get '/tarjetas/:numeroTarjeta' do
     tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
     tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
     tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
+    tarjeta_hash["saldo"]=tarjeta.saldo
     return tarjeta_hash.to_json
 end
 
