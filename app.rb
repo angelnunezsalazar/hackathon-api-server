@@ -109,7 +109,7 @@ post '/tarjetas' do
     tarjeta.numero_cuenta=rand.to_s[2..14]
     tarjeta.fecha_alta=Time.now.strftime("%Y-%m-%d")
     tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
-    tarjeta.saldoDisponible=(Time.now+5.years).strftime("%Y-%m-%d")
+    tarjeta.saldo=2000
     tarjeta.json=payload.to_json
     tarjeta.save
     return {"numeroTarjeta" => tarjeta.numero_tarjeta,
