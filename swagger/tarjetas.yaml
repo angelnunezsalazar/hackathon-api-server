@@ -4,7 +4,6 @@ info:
   description: |-
     API que se encarga de crear una tarjeta de credito para un cliente titular. A la tarjeta se le coloca la marca tipo, moneda, importe de Linea, etc
     <strong>Ejemplo de uso:</strong> Se ha utilizado esta API para la venta digital de tarjetas de credito, en donde se ha tenido alcance para clientes y no clientes del banco, ofreciendo campañas personalizadas con una pre-evaluación a los clientes
-
     <strong>Parametros Entrada:</strong> Código Unico, cóigo de Marca, Tipo, Linea de Credito, dia pago, etc.
     <strong>Parametros Salida:</strong> Código Unico, Número Tarjeta, Número Cuenta, fecha Alta, fecha Vencimiento
   version: 1.0.0
@@ -33,7 +32,7 @@ paths:
         - name: numeroTarjeta
           in: path
           required: true
-          description: Número de la Cuenta.
+          description: Número de la tarjeta.
           type: string
       responses:
         '200':

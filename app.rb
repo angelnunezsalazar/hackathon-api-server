@@ -171,12 +171,24 @@ def calcular_importe_cuota(loan,time,rate)
     return payment
 end
 
-post '/simulacion/pasecuotas' do
+post '/pasecuotas/simulacion' do
     payload = JSON.parse(request.body.read)  
     importe_cuota = calcular_importe_cuota(payload['importe'].to_i,
                                      payload['cuotas'].to_i,
                                      payload['tasaInteresAnual'].to_f)
-    return {"importeCuota" => '%.2f' % [importe_cuota]}.to_json
+    return {"importeCuota" => '%.2f' % [importe_cuota],
+            "proximaFechaPago" => (Time.now + n.months).strftime("%Y-%m-%d")}.to_json
+end
+
+get '/pasecuotas/:numeroTarjeta/cuotas' do
+    cuotas = Movimiento.where(numero_tarjeta: params['numeroTarjeta'])
+    cuotas_hash = cuotas.map { |m| 
+        cuota=JSON.parse(m.json)
+        cuota["numeroTarjeta"]   = m.numero_tarjeta
+        cuota["numeroMovimiento"]= m.numero_movimiento
+        cuota
+    }
+    return cuotas_hash.to_json
 end
 
 post '/pasecuotas' do
@@ -211,16 +223,5 @@ post '/pasecuotas' do
     end
  
     return { "cuotasGeneradas" => nuevos_movimientos }.to_json 
-end
-
-get '/tarjetas/:numeroTarjeta/cuotas' do
-    movimientos = Movimiento.where(numero_tarjeta: params['numeroTarjeta'])
-    movimientos_hash = movimientos.map { |m| 
-        movs=JSON.parse(m.json)
-        movs["numeroTarjeta"]=m.numero_tarjeta
-        movs["numeroMovimiento"]=m.numero_movimiento
-        movs
-    }
-    return movimientos_hash.to_json
 end
 
