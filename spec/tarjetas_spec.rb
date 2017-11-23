@@ -8,6 +8,14 @@ describe 'API AltaTarjeta' do
     expect_json_keys([:numeroTarjeta])
     expect_json_keys([:fechaAlta])
     expect_json_keys([:fechaVencimiento])
+    expect_json_keys([:saldo])
+  end
+
+  it 'crea una tarjeta y retorna el saldo igual al importeLinea' do
+    request = JSON.parse(File.read('payloads/altatarjeta_request.json'))
+    request["importeLinea"] = "8000.55"
+    post '/tarjetas', request
+    expect(json_body[:saldo]).to eql("8000.55")
   end
 
   it 'retorna todas las tarjetas del cliente dado su codigo unico' do

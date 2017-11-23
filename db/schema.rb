@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
   create_table "reclamos", force: :cascade do |t|
     t.string "codigo_unico_cliente"
     t.string "numero_reclamo"
+    t.string "estado"
     t.string "json"
   end
 
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
     t.string "numero_tarjeta"
     t.string "fecha_alta"
     t.string "fecha_vencimiento"
-    t.string "saldo"
+    t.decimal "saldo", precision: 10, scale: 3
     t.string "json"
   end
 

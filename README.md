@@ -25,6 +25,9 @@ Instrucciones
 
 	Heroku extraerá automáticamente los cambios y los desplegará en su plataforma
 
+Actualizar BD
+----------------
+
 - Ejecutar Migraciones
 
 	$ heroku run rake db:migrate --app hackathon-api-server

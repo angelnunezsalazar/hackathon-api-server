@@ -65,11 +65,10 @@ end
 
 post '/transferencia' do
     payload = JSON.parse(request.body.read)
-    puts payload
     cuenta_cargo = Cuenta.find_by(numero_cuenta: payload['numeroCuentaCargo'])
-    cuenta_cargo.saldo = cuenta_cargo.saldo - payload['importeCargo'].to_i
+    cuenta_cargo.saldo = cuenta_cargo.saldo - payload['importeCargo'].to_f
     cuenta_abono = Cuenta.find_by(numero_cuenta: payload['numeroCuentaAbono'])
-    cuenta_abono.saldo=cuenta_abono.saldo + payload['importeAbono'].to_i
+    cuenta_abono.saldo=cuenta_abono.saldo + payload['importeAbono'].to_f
     cuenta_cargo.transaction do
         cuenta_cargo.save
         cuenta_abono.save
@@ -85,7 +84,7 @@ get '/tarjetas/:numeroTarjeta' do
     tarjeta_hash["numeroCuenta"]=tarjeta.numero_cuenta
     tarjeta_hash["fechaAlta"]=tarjeta.fecha_alta
     tarjeta_hash["fechaVencimiento"]=tarjeta.fecha_vencimiento
-    tarjeta_hash["importeLinea"]=tarjeta.saldo
+    tarjeta_hash["saldo"]=tarjeta.saldo
     return tarjeta_hash.to_json
 end
 
@@ -97,6 +96,7 @@ get '/clientes/:codigoUnicoCliente/tarjetas' do
         tarjeta["numeroCuenta"]=t.numero_cuenta
         tarjeta["fechaAlta"]=t.fecha_alta
         tarjeta["fechaVencimiento"]=t.fecha_vencimiento
+        tarjeta["saldo"]=t.saldo
         tarjeta
     }
     return tarjeta_hash.to_json
@@ -110,14 +110,14 @@ post '/tarjetas' do
     tarjeta.numero_cuenta=rand.to_s[2..14]
     tarjeta.fecha_alta=Time.now.strftime("%Y-%m-%d")
     tarjeta.fecha_vencimiento=(Time.now+5.years).strftime("%Y-%m-%d")
-    tarjeta.saldo=payload['importeLinea'].to_i
+    tarjeta.saldo=payload['importeLinea'].to_f
     tarjeta.json=payload.to_json
     tarjeta.save
     return {"numeroTarjeta" => tarjeta.numero_tarjeta,
             "numeroCuenta" => tarjeta.numero_cuenta,
             "fechaAlta" => tarjeta.fecha_alta,
             "fechaVencimiento" => tarjeta.fecha_vencimiento,
-            "saldoDisponible" => tarjeta.saldo}.to_json
+            "saldo" => tarjeta.saldo}.to_json
 end
 
 get '/clientes/:codigoUnicoCliente/reclamos' do
@@ -154,25 +154,21 @@ get '/tarjetas/:numeroTarjeta/movimientos' do
     return request.to_json
 end
 
-post '/reclamos/:numeroReclamo/abonar' do
-    # RQ: tarjetaAbono, importeAbono
-    payload = JSON.parse(request.body.read)
-    puts payload
-    # obtengo el reclamo y actualizo a PAGADO
+post '/reclamos/:numeroReclamo/abono' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
     halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
-    reclamo_hash=JSON.parse(reclamo.json)
-    reclamo_hash["estado"]="PAGADO"
-    # obtengo la tarjeta y actualizo SALDO disponible de la TC 
-    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: payload['tarjetaAbono'])
+    payload = JSON.parse(request.body.read)
+    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: payload['numeroTarjetaAbono'])
     halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta_abono.present?
-    tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_i
-
-    tarjeta_abono.transaction do
+    tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_f
+    reclamo.estado="PAGADO"
+    reclamo.transaction do
         tarjeta_abono.save
         reclamo.save
     end
-    return {"resultado" => "monto abonado"}.to_json
+    return {"numOperacion" => rand.to_s[1..10],
+            "reclamo" => {"numeroReclamo" => reclamo.numero_reclamo, "estado" => reclamo.estado},
+            "tarjeta" => {"numeroTarjeta" => tarjeta_abono.numero_tarjeta, "saldo" => tarjeta_abono.saldo}}.to_json
 end
 
 post '/pasecuotas' do
@@ -182,11 +178,11 @@ post '/pasecuotas' do
     # obtengo la tarjeta y actualizo SALDO disponible de la TC
     tarjeta = Tarjeta.find_by(numero_tarjeta: payload['tarjeta'])
     halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
-    tarjeta.saldo= (tarjeta.saldo - payload['monto'].to_i)
+    tarjeta.saldo= (tarjeta.saldo - payload['monto'].to_f)
 
     pase_hash=JSON.new
     pase_hash["totalCuotas"] = payload['cuotas']
-    pase_hash["importeCuota"] = payload['monto'].to_i / payload['cuotas'].to_i
+    pase_hash["importeCuota"] = payload['monto'].to_f / payload['cuotas'].to_f
     pase_hash["fechaFacturacion"] = (Time.now + 1.months).strftime("%Y-%m-%d")
     pase_hash["interesAnual"] = "13.100"
     pase_hash["saldoDisponible"] = tarjeta.saldo
