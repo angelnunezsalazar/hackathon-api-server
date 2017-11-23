@@ -172,12 +172,12 @@ def calcular_importe_cuota(loan,time,rate)
 end
 
 post '/pasecuotas/simulacion' do
-    payload = JSON.parse(request.body.read)  
+    payload = JSON.parse(request.body.read)
     importe_cuota = calcular_importe_cuota(payload['importe'].to_i,
                                      payload['cuotas'].to_i,
                                      payload['tasaInteresAnual'].to_f)
     return {"importeCuota" => '%.2f' % [importe_cuota],
-            "proximaFechaPago" => (Time.now + n.months).strftime("%Y-%m-%d")}.to_json
+            "proximaFechaPago" => (Time.now + 1.months).strftime("%Y-%m-%d")}.to_json
 end
 
 get '/pasecuotas/:numeroTarjeta/cuotas' do
