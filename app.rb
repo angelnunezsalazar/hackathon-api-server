@@ -154,7 +154,7 @@ get '/tarjetas/:numeroTarjeta/movimientos' do
     return request.to_json
 end
 
-post '/reclamos/:numeroReclamo/abono' do
+post '/reclamos/:numeroReclamo/abonos' do
     reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
     halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
     payload = JSON.parse(request.body.read)
@@ -171,45 +171,62 @@ post '/reclamos/:numeroReclamo/abono' do
             "tarjeta" => {"numeroTarjeta" => tarjeta_abono.numero_tarjeta, "saldo" => tarjeta_abono.saldo}}.to_json
 end
 
-post '/pasecuotas' do
-    # REQ: tarjeta, cuotas, monto
-    payload = JSON.parse(request.body.read)
-    puts payload
-    # obtengo la tarjeta y actualizo SALDO disponible de la TC
-    tarjeta = Tarjeta.find_by(numero_tarjeta: payload['tarjeta'])
-    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
-    tarjeta.saldo= (tarjeta.saldo - payload['monto'].to_f)
-
-    pase_hash=JSON.new
-    pase_hash["totalCuotas"] = payload['cuotas']
-    pase_hash["importeCuota"] = payload['monto'].to_f / payload['cuotas'].to_f
-    pase_hash["fechaFacturacion"] = (Time.now + 1.months).strftime("%Y-%m-%d")
-    pase_hash["interesAnual"] = "13.100"
-    pase_hash["saldoDisponible"] = tarjeta.saldo
-
-    # se guarda por adelantado el movimiento
-    movimiento = Movimientos.new
-    movimiento.numero_tarjeta = payload['tarjeta']
-    movimiento.numero_movimiento = rand.to_s[2..10]
-    movimiento.json = pase_hash.to_json
-
-    movimiento.transacion do
-        tarjeta.save
-        movimiento.save
-    end
- 
-    return pase_hash.to_json
+def calcular_importe_cuota(loan,time,rate)
+    i = (1+rate/100/12)**(12/12)-1
+    annuity = (1-(1/(1+i))**time)/i 
+    payment = loan/annuity
+    return payment
 end
 
-get '/pasecuotas/:numeroTarjeta/lista' do
+post '/simulacion/pasecuotas' do
+    payload = JSON.parse(request.body.read)  
+    importe_cuota = calcular_importe_cuota(payload['importe'].to_i,
+                                     payload['cuotas'].to_i,
+                                     payload['tasaInteresAnual'].to_f)
+    return {"importeCuota" => '%.2f' % [importe_cuota]}.to_json
+end
+
+post '/pasecuotas' do
+    payload = JSON.parse(request.body.read)
+    tarjeta = Tarjeta.find_by(numero_tarjeta: payload['numeroTarjeta'])
+    halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta.present?
+
+    nuevos_movimientos=[]
+    importe_cuota = calcular_importe_cuota(payload['importe'].to_i,
+                                            payload['cuotas'].to_i,
+                                            payload['tasaInteresAnual'].to_f)
+    payload['cuotas'].to_i.times do |n|
+        movimiento = Movimiento.new
+        movimiento.numero_tarjeta = payload['numeroTarjeta']
+        movimiento.numero_movimiento = rand.to_s[2..10]
+        movimiento.json = {
+            "fechaFactura" => (Time.now + n.months).strftime("%Y-%m-%d"),
+            "fechaProceso" => (Time.now + n.months).strftime("%Y-%m-%d"),
+            "signoImporte" => "-",
+            "importeFactura" => '%.2f' % importe_cuota,
+            "monedaMovimiento" => "001",
+            "descripcion" => "PASE A CUOTAS"
+        }.to_json
+        nuevos_movimientos.push(movimiento)
+    end
+
+    tarjeta.transaction do
+        tarjeta.save
+        nuevos_movimientos.each do |movimiento|
+            movimiento.save
+        end
+    end
+ 
+    # return pase_hash.to_json
+end
+
+get '/tarjetas/:numeroTarjeta/movimientos2' do
     movimientos = Movimiento.where(numero_tarjeta: params['numeroTarjeta'])
-    puts movimientos
-    movs_hash = movimientos.map { |c| 
-        movs=JSON.parse(c.json)
-        movs["importeCuota"]=c.importeCuota
-        movs["fechaFacturacion"]=c.fechaFacturacion
-        movs["interesAnual"]=c.interesAnual
+    movimientos_hash = movimientos.map { |m| 
+        movs=JSON.parse(m.json)
+        movs["numeroTarjeta"]=m.numero_tarjeta
+        movs["numeroMovimiento"]=m.numero_movimiento
         movs
     }
-    return movs_hash.to_json
+    return movimientos_hash.to_json
 end

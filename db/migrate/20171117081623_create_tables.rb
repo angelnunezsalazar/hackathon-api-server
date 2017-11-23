@@ -32,7 +32,7 @@ class CreateTables < ActiveRecord::Migration[5.1]
 
 		create_table "movimientos", :force => true do |t|
 			t.string  "numero_tarjeta"
-			t.string  "numeroMovimiento"
+			t.string  "numero_movimiento"
 		    t.string  "json"
 		end
 	end

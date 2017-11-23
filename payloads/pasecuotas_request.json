@@ -1,5 +1,7 @@
 {
-    "tarjeta": "4244575205448683",
-    "cuotas": "2",
-    "monto": "80.00"
+    "numeroTarjeta": "29292928374756",
+    "numeroMovimiento": "2456948533",
+    "importe": "75.60",
+    "cuotas": "3",
+    "tasaInteresAnual": "75%"
 }

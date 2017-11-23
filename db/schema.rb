@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20171117081623) do
 
   create_table "movimientos", force: :cascade do |t|
     t.string "numero_tarjeta"
-    t.string "numeroMovimiento"
+    t.string "numero_movimiento"
     t.string "json"
   end
 

@@ -5,24 +5,25 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "99.99",
-    "nombreComercioReducido": "COMPRA ELECTRO",
+    "descripcion": "COMPRA ELECTRO",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999002",
-    "monedaMovimiento": "",
+    "monedaMovimiento": "001",
     "fechaFactura": "2017-11-14",
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "100.00",
-    "nombreComercioReducido": "DISP EFECT CAJERO",
+    "descripcion": "DISP EFECT CAJERO",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999003",
+    "monedaMovimiento": "001",
     "fechaFactura": "2017-11-15",
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "15.23",
-    "nombreComercioReducido": "COMPRAS ELECTRO",
+    "descripcion": "COMPRAS ELECTRO",
     "indicadorConversionCuotas": "false"
   }, {
     "numeroMovimiento": "999004",
@@ -31,7 +32,7 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "789.00",
-    "nombreComercioReducido": "COMPRAS ALIMENTOS",
+    "descripcion": "COMPRAS ALIMENTOS",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999005",
@@ -40,7 +41,7 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "120.00",
-    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "descripcion": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999006",
@@ -49,7 +50,7 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "45.99",
-    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "descripcion": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999007",
@@ -58,7 +59,7 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "250.00",
-    "nombreComercioReducido": "COMPRAS REVOLVENTES",
+    "descripcion": "COMPRAS REVOLVENTES",
     "indicadorConversionCuotas": "true"
   }, {
     "numeroMovimiento": "999008",
@@ -67,7 +68,7 @@
     "fechaProceso": "2017-11-15",
     "signoImporte": "-",
     "importeFactura": "10.00",
-    "nombreComercioReducido": "COMPRAS ALIMENTOS",
+    "descripcion": "COMPRAS ALIMENTOS",
     "indicadorConversionCuotas": "false"
   }
 ]
