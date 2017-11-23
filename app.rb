@@ -225,3 +225,21 @@ post '/pasecuotas' do
     return { "cuotasGeneradas" => nuevos_movimientos }.to_json 
 end
 
+post '/calificacion/simulacion' do
+    payload = JSON.parse(request.body.read)
+
+    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987 && payload['fechaNacimiento']=='CASADO'
+    campaniasOK = payload['indicadorAval']=='S' || payload['indicadorCompraDeuda']=='S' || payload['indicadorAmpliacionLinea']=='S'
+
+    halt 200, { :codigoResultado => "2",
+                :codigoEvaluacion => rand.to_s[1..10],
+                :message => "Cliente no cumple caracteristicas no existe" }.to_json
+        unless  no clienteOK || no (clienteOK && campaniasOK)
+
+    requiereAval = payload['montoProducto'] == 'S'
+    ventaOK = payload['montoProducto'].to_i % 2 > payload['montoCreditoCampana'].to_i
+
+    return { :codigoResultado => "0",
+             :codigoEvaluacion => rand.to_s[1..10],
+             :message => "Cliente cumple la calificación" }.to_json
+end
