@@ -1,0 +1,155 @@
+swagger: '2.0'
+info:
+  title: API Calificacion
+  description:  |-
+    API que sirve para evaluar si un cliente califica para una producto. El flujo de evaluación pasa por un registro de expediente 
+    y validación que no tenga otro tramite de evaluación en curso. Evaluación de Tarjeta de Credito. 
+    <strong>Ejemplo de uso:</strong> Lo usamos para calificar a los clientes en linea y los que califican se los redirige 
+    a un flujo de venta de tarjeta de credito. 
+    <strong>Parametros Entrada:</strong> Datos del Cliente - datos personales, laborales, sueldo fijo y variable, etc. 
+    <strong>Parametros Salida:</strong> Numero expediente, codigo de evaluación, codigo resultado
+  version: 1.0.0
+  x-ibm-name: ms-calificacioncda
+host: calificacioncda-UAT.interbankclouduat.pe
+basePath: /rest
+paths:
+  /calificacionCDA:
+    post:
+      parameters:
+        - in: body
+          name: request
+          required: true
+          description: Orquestador de calificacion CDA.
+          schema:
+            $ref: '#/definitions/calificacionCDARequest'
+      responses:
+        '200':
+          description: 'Conexion exitosa / Error tipo 01: Contraseña incorrecta en la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error tipo 05: No se ingresa un dato obligatorio o formato incorrecto.'
+          schema:
+            $ref: '#/definitions/calificacionCDAResponse'
+        '401':
+          description: Acceso no autorizado
+        '404':
+          description: Ruta no encontrada
+        '500':
+          description: Error interno del servicio. Favor intente luego
+definitions:
+  calificacionCDARequest:
+    type: object
+    required:
+      - codigoUnicoCliente
+      - codigoExpediente
+      - json
+    properties:
+      codigoUnicoCliente:
+        type: string
+        example: '1234567890'
+      codigoExpediente:
+        type: string
+        example: '321654987'
+      json:
+        type: object
+        required:
+          - solicitante
+          - producto
+        properties:
+          solicitante:
+            $ref: '#/definitions/SolicitanteCalificacion'
+          producto:
+            $ref: '#/definitions/ProductoCalificacion'
+  SolicitanteCalificacion:
+    type: object
+    required:
+      - estadoCivil
+      - situacionLaboral
+      - fechaNacimiento
+    properties:
+      estadoCivil:
+        type: string
+        example: CASADO
+      situacionLaboral:
+        type: string
+        example: EMPLEADO
+      fechaNacimiento:
+        type: string
+        example: '1990-01-10'
+  ProductoCalificacion:
+    type: object
+    required:
+      - codigoProductoBanco
+      - montoProducto
+      - montoCreditoCampana
+    properties:
+      codigoProducto:
+        type: string
+        example: VEH-012231
+      codigoProductoBanco:
+        type: string
+        example: IBK-CREDVEH-012231
+      descripcionProducto:
+        type: string
+        example: Vehículo SUB Kia Carens 2017
+      montoProducto:
+        type: number
+        example: 48500
+      tipoSolicitud:
+        type: string
+        example: CRED-CAMPANIA
+      codigoCampania:
+        type: string
+        example: '12345621'
+      montoCreditoCampana:
+        type: number
+        example: 28000
+      indicadorAval:
+        type: string
+        example: 'N'
+      indicadorVehicular:
+        type: string
+        example: S
+      indicadorCompraDeuda:
+        type: string
+        example: 'N'
+      indicadorAmpliacionLinea:
+        type: string
+        example: 'N'
+  calificacionCDAResponse:
+    type: object
+    properties:
+      numeroExpediente:
+        type: string
+        example: '17071110898000068902'
+      codigoEvaluacion:
+        type: string
+        example: '125158'
+      codigoResultado:
+        type: string
+        example: '2'
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - set-variable:
+          title: set-variable
+          actions:
+            - set: message.body
+              value: '{"numeroExpediente":"17071110898000068902","codigoEvaluacion":"125158","codigoResultado":"2"}'
+            - set: message.headers.content-type
+              value: application/json
+            - set: message.status.code
+              value: '200'
+          version: 1.0.0
+          description: Dummy
+    catch: []
+securityDefinitions:
+  SecureID:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - SecureID: []

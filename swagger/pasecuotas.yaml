@@ -1,254 +1,148 @@
 swagger: '2.0'
 info:
   title: API Pase Cuotas
-  description: "API que realiza el pase  a cuotas .\n<strong>Ejemplo de uso:</strong> Hemos usado esta API para darle la facilidad al cliente a pasar a un número de cuotas un consumo . Esta funcionalidad esta disponible por la APP y BPI y es una de la más usadas.\n<strong>Parametros Entrada:</strong>Tarjeta Credito, total cuotas, importe , fecha \n<strong>Parametros Salida:</strong> Importe de cuota, tasa, fecha pago"
+  description:  |-
+    API que realiza el pase  a cuotas. 
+    <strong>Ejemplo de uso:</strong> Hemos usado esta API para darle la facilidad al cliente a pasar a un número de cuotas un consumo. 
+    Esta funcionalidad esta disponible por la APP y BPI y es una de la más usadas. 
+    <strong>Parametros Entrada:</strong>Tarjeta Credito, total cuotas, importe , fecha. 
+    <strong>Parametros Salida:</strong> Importe de cuota, tasa, fecha pago
   version: 1.0.0
   x-ibm-name: ms-confirmacioncuotas
 host: confirmacioncuotas-UAT.interbankclouduat.pe
 basePath: /ms
 paths:
-  /confirmacioncuotas:
+  /pasecuotas:
     post:
       parameters:
         - in: body
           name: request
           required: true
-          description: Aplica las cuotas que el usuario a indicado.
+          description: Ejecuta un pase a cuotas de un movimiento y devuelve el próximo pago a realizar.
           schema:
-            type: object
-            required:
-              - MessageRequest
-            properties:
-              MessageRequest:
-                $ref: '#/definitions/MessageRequest'
+            $ref: '#/definitions/PaseCuotasRequest'
       responses:
         '200':
-          description: 'Conexion exitosa / Error tipo 01: Contraseña incorrecta en la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error tipo 05: No se ingresa un dato obligatorio o formato incorrecto.'
+          description: Pase a cuotas exitoso.
           schema:
-            type: object
-            required:
-              - MessageResponse
-            properties:
-              MessageResponse:
-                $ref: '#/definitions/MessageResponse'
+            $ref: '#/definitions/PaseCuotasResponse'
         '401':
           description: Acceso no autorizado
         '404':
-          description: Ruta no encontrada
+          description: Tarjeta no encontrada
+        '500':
+          description: Error interno del servicio. Favor intente luego
+  /pasecuotas/simulacion:
+    post:
+      parameters:
+        - in: body
+          name: request
+          required: true
+          description: Simula y calcula las cuotas y el próximo pago a realizar.
+          schema:
+            $ref: '#/definitions/SimulacionCuotasRequest'
+      responses:
+        '200':
+          description: Cálculo de pase a cuotas exitoso.
+          schema:
+            $ref: '#/definitions/SimulacionCuotaResponse'
+  '/pasecuotas/{numeroTarjeta}/cuotas':
+    get:
+      parameters:
+        - name: numeroTarjeta
+          in: path
+          required: true
+          description: Número de tarjeta para listar sus cuotas.
+          type: string
+      responses:
+        '200':
+          description: Pase a cuotas exitoso.
+          schema:
+            $ref: '#/definitions/Cuota'
+        '401':
+          description: Acceso no autorizado
+        '404':
+          description: Tarjeta no encontrada
         '500':
           description: Error interno del servicio. Favor intente luego
 definitions:
-  MessageRequest:
-    type: object
+  PaseCuotasRequest:
     required:
-      - Header
-      - Body
+      - numeroTarjeta
+      - importe
+      - cuotas
+      - tasaInteresAnual
     properties:
-      Header:
-        type: object
-        required:
-          - HeaderRequest
-        properties:
-          HeaderRequest:
-            $ref: '#/definitions/HeaderRequest'
-      Body:
-        type: object
-        required:
-          - confirmarPaseCuotas
-        properties:
-          confirmarPaseCuotas:
-            $ref: '#/definitions/confirmarPaseCuotas'
-  MessageResponse:
-    type: object
-    required:
-      - Header
-      - Body
-    properties:
-      Header:
-        type: object
-        required:
-          - HeaderResponse
-        properties:
-          HeaderResponse:
-            $ref: '#/definitions/HeaderResponse'
-      Body:
-        type: object
-        required:
-          - confirmarPaseCuotasResponse
-        properties:
-          confirmarPaseCuotasResponse:
-            $ref: '#/definitions/confirmarPaseCuotasResponse'
-  confirmarPaseCuotasResponse:
+      numeroTarjeta:
+        type: string
+        example: '12345678001236'
+      importe:
+        type: number
+        example: 150
+      cuotas:
+        type: number
+        example: 4
+      tasaInteresAnual:
+        type: number
+        example: 1.69
+  SimulacionCuotaResponse:
     type: object
     properties:
-      codigoRetorno:
-        type: string
-        example: '0'
-      fechaPago:
-        type: string
-        example: '2017-12-04'
-      fechaLiquidacion:
-        type: string
-        example: '2017-11-09'
       importeCuota:
         type: number
-        example: '25.93'
-      tasa:
-        type: number
-        example: '1.4900'
-      numeroOperacion:
+        example: 56
+      proximaFechaPago:
         type: string
-        example: '8985'
-      nombreEstablecimiento:
-        type: string
-        example: DE POR TRANSF(PASE A CUOTA)
-      tasaInteresAnual:
-        type: string
-        example: '19.4255'
-  confirmarPaseCuotas:
-    type: object
+        example: '2017-12-05'
+  SimulacionCuotasRequest:
     required:
-      - importeFactura
-      - monedaMovimiento
-      - numeroExtractoCuenta
-      - numeroMovimientoDentroExtracto
-      - tarjetaCredito
-      - totalCuotas
+      - importe
+      - cuotas
+      - tasaInteresAnual
+    type: object
     properties:
-      tarjetaCredito:
-        type: string
-        example: '377753001825552'
-      numeroExtractoCuenta:
+      importe:
         type: number
-        example: '3'
-      numeroMovimientoDentroExtracto:
+        example: 1500
+      cuotas:
         type: number
-        example: '14'
-      monedaMovimiento:
+        example: 2
+      tasaInteresAnual:
         type: number
-        example: '604'
-      importeFactura:
-        type: number
-        example: '75.60'
-      fechaFactura:
-        type: string
-        example: '2017-10-02'
+        example: 2
+  PaseCuotasResponse:
+    type: object
+    properties:
       totalCuotas:
         type: number
-        example: '3'
-      canal:
+        example: 25.93
+      importeCuota:
+        type: number
+        example: 15
+      fechaFacturacion:
         type: string
-        example: BPI
-      oficina:
-        type: string
-        example: '898'
-      terminal:
-        type: string
-        example: SERVER01
-  HeaderRequest:
+        example: '2017-01-01'
+      interesAnual:
+        type: number
+        example: 1.49
+      saldoDisponible:
+        type: number
+        example: 1550
+  Cuota:
     type: object
     required:
-      - request
-      - identity
+      - numeroTarjeta
+      - numeroCuota
     properties:
-      request:
-        $ref: '#/definitions/Transaction'
-      identity:
-        $ref: '#/definitions/Identity'
-  Transaction:
-    type: object
-    required:
-      - channelCode
-      - consumerId
-      - messageId
-      - serviceId
-    properties:
-      serviceId:
+      numeroTarjeta:
         type: string
-        example: SRM
-      consumerId:
+        example: '1245686947573444'
+      numeroCuota:
         type: string
-        example: CLOUD
-      moduleId:
-        type: string
-        example: paseCuotas
-      channelCode:
-        type: string
-        example: '02'
-      messageId:
-        type: string
-        example: HACKATON_1234567890
-      timestamp:
-        type: string
-        example: 2017-09-20T14
-      countryCode:
-        type: string
-        example: PE
-      groupMember:
-        type: string
-        example: G0003
-      referenceNumber:
-        type: string
-        example: REFN0001
-  Identity:
-    type: object
-    required:
-      - netId
-      - userId
-    properties:
-      netId:
-        type: string
-        example: BI
-      userId:
-        type: string
-        example: BPI00
-      supervisorId:
-        type: string
-        example: BPI00
-      deviceId:
-        type: string
-        example: 10.11.52.66
-      serverId:
-        type: string
-        example: s340vd1.grupoib.local
-      branchCode:
-        type: string
-        example: '898'
-  ResponseStatus:
-    type: object
-    required:
-      - busResponseCode
-      - busResponseMessage
-      - messageIdResBus
-      - responseType
-    properties:
-      responseType:
-        type: string
-        example: '0'
-      busResponseCode:
-        type: string
-        example: '0'
-      busResponseMessage:
-        type: string
-        example: EJECUCION CON EXITO
-      srvResponseCode:
-        type: string
-        example: '00'
-      srvResponseMessage:
-        type: string
-        example: EJECUCION CON EXITO
-      messageIdResBus:
-        type: string
-        example: HACKATON_1234567890
-  HeaderResponse:
-    type: object
-    required:
-      - status
-    properties:
-      response:
-        $ref: '#/definitions/Transaction'
-      status:
-        $ref: '#/definitions/ResponseStatus'
+        example: '1230001'
+      montoCutoa:
+        type: number
+        example: 118
 x-ibm-configuration:
   enforced: true
   testable: true
@@ -257,17 +151,47 @@ x-ibm-configuration:
     enabled: true
   assembly:
     execute:
-      - set-variable:
-          title: set-variable
-          actions:
-            - set: message.body
-              value: '{"MessageResponse":{"Header":{"HeaderResponse":{"response":{"serviceId":"SRM","consumerId":"CLOUD","moduleId":"paseCuotas","channelCode":"02","messageId":"HACKATON_333230944100110360157000000000000","timestamp":"2017-09-20T14","countryCode":"PE","groupMember":"G0003","referenceNumber":"48719232_20170920144231699_515"},"status":{"responseType":"0","busResponseCode":"0","busResponseMessage":"EJECUCION CON EXITO","srvResponseCode":"00","srvResponseMessage":"EJECUCION CON EXITO","messageIdResBus":"HACKATON_1234567890"}}},"Body":{"confirmarPaseCuotasResponse":{"codigoRetorno":"0","fechaPago":"2017-12-04","fechaLiquidacion":"2017-11-09","importeCuota":"25.93","tasa":"1.4900","numeroOperacion":"8985","nombreEstablecimiento":"DE POR TRANSF(PASE A CUOTA)","tasaInteresAnual":"19.4255"}}}}'
-            - set: message.headers.content-type
-              value: application/json
-            - set: message.status.code
-              value: '200'
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: post
+                  path: /pasecuotas/simulacion
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/pasecuotas/simulacion'
+            - operations:
+                - verb: post
+                  path: /pasecuotas
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/pasecuotas'
+            - operations:
+                - verb: get
+                  path: '/pasecuotas/{numeroTarjeta}/cuotas'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/pasecuotas/{numeroTarjeta}/cuotas'
+          otherwise: []
           version: 1.0.0
-          description: Dummy
     catch: []
 securityDefinitions:
   SecureID:
@@ -277,3 +201,7 @@ securityDefinitions:
     name: X-IBM-Client-Id
 security:
   - SecureID: []
+produces:
+  - application/json
+consumes:
+  - application/json

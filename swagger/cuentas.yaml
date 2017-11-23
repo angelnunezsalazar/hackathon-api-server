@@ -3,7 +3,9 @@ info:
   title: API Cuentas
   description: |-
     API que sirve para la gestión de una cuenta en el Banco. Esta cuenta se registra en el sistema SAVING y se puede crear cuentas de diversos tipos.
-    <strong>Ejemplo de uso:</strong> Se utiliza para realizar la apertura de Cuenta Digital. Desde otras aplicaciones podemos crear una cuenta al cliente en este proceso de valida la identidad del cliente y se envia a crear una cuenta : Simple, Sueldo, Millonaria.
+    <strong>Ejemplo de uso:</strong> Se utiliza para realizar la apertura de Cuenta Digital. 
+    Desde otras aplicaciones podemos crear una cuenta al cliente en este proceso de valida la identidad del cliente 
+    y se envia a crear una cuenta Simple, Sueldo, Millonaria.
     <strong>Parametros Entrada:</strong> Código unico del cliente, código producto/subproducto. Código de la cuenta.
     <strong>Parametros Salida:</strong>El número de cuenta creada. Información de la cuenta solicitada.
   version: 1.0.0
