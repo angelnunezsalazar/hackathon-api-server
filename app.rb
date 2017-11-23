@@ -154,21 +154,14 @@ get '/tarjetas/:numeroTarjeta/movimientos' do
     return request.to_json
 end
 
-post '/reclamos/:numeroReclamo/abonos' do
-    reclamo = Reclamo.find_by(numero_reclamo: params['numeroReclamo'])
-    halt 404, { :message => "Reclamo no existe" }.to_json unless reclamo.present?
+post '/tarjetas/:numeroTarjeta/abonos' do
     payload = JSON.parse(request.body.read)
-    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: payload['numeroTarjetaAbono'])
+    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
     halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta_abono.present?
     tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_f
-    reclamo.estado="PAGADO"
-    reclamo.transaction do
-        tarjeta_abono.save
-        reclamo.save
-    end
+    tarjeta_abono.save
     return {"numOperacion" => rand.to_s[1..10],
-            "reclamo" => {"numeroReclamo" => reclamo.numero_reclamo, "estado" => reclamo.estado},
-            "tarjeta" => {"numeroTarjeta" => tarjeta_abono.numero_tarjeta, "saldo" => tarjeta_abono.saldo}}.to_json
+            "saldoTarjetaAbono" => tarjeta_abono.saldo}.to_json
 end
 
 def calcular_importe_cuota(loan,time,rate)

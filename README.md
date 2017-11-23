@@ -30,17 +30,13 @@ Actualizar BD
 
 - Ejecutar Migraciones
 
+	$ db/drop_all_tables.sh
 	$ heroku run rake db:migrate --app hackathon-api-server
-
-- Limpiar la data
-	$ heroku run rake db:clear --app hackathon-api-server
-	$ heroku run rake db:migrate --app hackathon-api-server
-
-
 
 Logs
 -----------------
 - Ver los logs
+
 	$ heroku logs --app hackathon-api-server
 
 Postgresql
