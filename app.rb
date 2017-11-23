@@ -217,10 +217,10 @@ post '/pasecuotas' do
         end
     end
  
-    # return pase_hash.to_json
+    return { "cuotasGeneradas" => nuevos_movimientos }.to_json 
 end
 
-get '/tarjetas/:numeroTarjeta/movimientos2' do
+get '/tarjetas/:numeroTarjeta/cuotas' do
     movimientos = Movimiento.where(numero_tarjeta: params['numeroTarjeta'])
     movimientos_hash = movimientos.map { |m| 
         movs=JSON.parse(m.json)
@@ -230,3 +230,4 @@ get '/tarjetas/:numeroTarjeta/movimientos2' do
     }
     return movimientos_hash.to_json
 end
+

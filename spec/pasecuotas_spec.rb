@@ -36,7 +36,7 @@ describe 'API PaseCuotas' do
   end
   
   def consultar_movimientos(numero_tarjeta)
-    get "/tarjetas/#{numero_tarjeta}/movimientos2"
+    get "/tarjetas/#{numero_tarjeta}/cuotas"
     return json_body
   end
 end
