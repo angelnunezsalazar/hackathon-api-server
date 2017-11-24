@@ -1,0 +1,18 @@
+[{
+    "codigoUnicoCliente": "0027641514",
+    "marcaTipo": "054",
+    "descripcionTipoTarjeta": "Visa Cashback Oro",
+    "moneda": "001",
+    "monto": "5000",
+    "tasaInteresAnual": "23.5",
+    "codigoCampania": ".937103590",
+    "nombreProducto": "PRESTAMO EFECTIVO"
+}, {
+    "codigoUnicoCliente": "0027641514",
+    "moneda": "001",
+    "monto": "5000",
+    "tasaInteresAnual": "23.5",
+    "plazoMaximo": "12",
+    "codigoCampania": ".738742491",
+    "nombreProducto": "PRESTAMO EFECTIVO"
+}]
