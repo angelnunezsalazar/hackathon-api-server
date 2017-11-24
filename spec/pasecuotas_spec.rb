@@ -4,7 +4,7 @@ describe 'API PaseCuotas' do
 
   it 'simula un pase a cuotas' do
     request = JSON.parse(File.read('payloads/simulacionpasecuotas_request.json'))
-    post '/simulacion/pasecuotas', request
+    post '/pasecuotas/simulacion', request
     expect_json_keys([:importeCuota])
   end
 
@@ -36,7 +36,7 @@ describe 'API PaseCuotas' do
   end
   
   def consultar_movimientos(numero_tarjeta)
-    get "/tarjetas/#{numero_tarjeta}/cuotas"
+    get "/pasecuotas/#{numero_tarjeta}/cuotas"
     return json_body
   end
 end
