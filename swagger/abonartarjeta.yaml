@@ -1,0 +1,77 @@
+swagger: '2.0'
+info:
+  title: API AbonarTarjeta
+  description: |-
+    API que realiza el abono a una tarjeta del cliente. Este abono se verá reflejado en el saldo disponible de la tarjeta.
+    <strong>Ejemplo de uso:</strong> Se utiliza este API para devolver el monto consumido en la tarjeta de crédito, los clientes pueden reclamar por un movimiento no reconocido, se aplica realizando un abono a su tarjeta con el monto de devolución.
+    <strong>Parametros Entrada:</strong> Número de tarjeta, importe, reclamo que generó el retorno de dinero
+    <strong>Parametros  Salida:</strong> Si el proceso es exitoso o no.
+  version: 1.0.0
+  x-ibm-name: ms-abonar-tarjeta-premia
+host: abonotarjetapremia-UAT.interbankclouduat.pe
+basePath: /ms
+paths:
+  '/tarjeta/{numeroTarjeta}/abonos':
+    post:
+      summary: ''
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/AbonarTarjetaResponse'
+      parameters:
+        - name: numeroTarjeta
+          type: string
+          required: true
+          in: path
+          description: Número del Tarjeta
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/AbonarTarjeta'
+          description: Detalle del abono a realizar
+      description: Abona el monto indicado a la tarjeta de crédito
+definitions:
+  AbonarTarjeta:
+    type: object
+    required:
+      - importeAbono
+      - motivoAbono
+    properties:
+      importeAbono:
+        type: number
+        example: '120.00'
+      motivoAbono:
+        type: string
+        example: Pago por Canal Digital
+  AbonarTarjetaResponse:
+    type: object
+    properties:
+      respuesta:
+        type: string
+        example: Abono exitoso
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - proxy:
+          title: proxy
+          timeout: 60
+          verb: keep
+          cache-response: protocol
+          cache-ttl: 900
+          version: 1.0.0
+          target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas/{numeroTarjeta}/abono'
+securityDefinitions:
+  SecureID:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - SecureID: []
