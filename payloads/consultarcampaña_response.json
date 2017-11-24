@@ -15,4 +15,21 @@
     "plazoMaximo": "12",
     "codigoCampania": ".738742491",
     "nombreProducto": "PRESTAMO EFECTIVO"
+},{
+    "codigoUnicoCliente": "0027641514",
+    "moneda": "001",
+    "monto": "15000",
+    "tasaInteresAnual": "17.5",
+    "plazoMaximo": "24",
+    "codigoCampania": "1233431",
+    "nombreProducto": "CREDITO VEHICULAR"
+},
+{
+    "codigoUnicoCliente": "0027641514",
+    "moneda": "001",
+    "monto": "7000",
+    "tasaInteresAnual": "58.0",
+    "plazoMaximo": "12",
+    "codigoCampania": "1233433",
+    "nombreProducto": "TARJETA DORADA"
 }]
