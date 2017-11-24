@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API Consultar Campaña
+  title: API Campaña
   description: "Permite listar y crear campañas para un cliente con código único.\n<strong>Ejemplo de uso:</strong> Usamos esta API para que el cliente tenga campañas pre-aprobadas, por ejemplo : Tarjeta, puede ingresar al flujo de venta tarjeta digital . Esta funcionalidad tambien se usa en un bot de Interbank.\n<strong>Parametros Entrada:</strong> Código único de cliente e información de la campaña a crear. \n<strong>Parametros Salida:</strong>Datos de la campaña"
   version: 1.0.0
   x-ibm-name: ms-consultarcampania
@@ -15,13 +15,13 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/Campania'
+            $ref: '#/definitions/CampaniaTarjeta'
           description: Información de la campaña para cambio de tarjeta de crédito
       responses:
         '200':
           description: Operación Exitosa
           schema:
-            type: object
+            $ref: '#/definitions/CrearCampaniaResponse'
   /campania/prestamos:
     post:
       summary: Registra una campaña de préstamo para un cliente.
@@ -30,13 +30,13 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/Campania'
+            $ref: '#/definitions/CampaniaPrestamos'
           description: Información de la campaña para el préstamo
       responses:
         '200':
           description: Operación Exitosa
           schema:
-            type: object
+            $ref: '#/definitions/CrearCampaniaResponse'
   '/cliente/{codigoUnicoCliente}/campanias':
     get:
       summary: Registra una campaña de préstamo para un cliente.
@@ -50,9 +50,32 @@ paths:
         '200':
           description: 200 OK
           schema:
-            $ref: '#/definitions/Campania'
+            $ref: '#/definitions/ClienteCampanias'
 definitions:
-  Campania:
+  CampaniaTarjeta:
+    type: object
+    properties:
+      codigoUnicoCliente:
+        type: string
+        example: '123456789213'
+      marcaTipo:
+        type: string
+        example: '054'
+      descripcionTipoTarjeta:
+        type: string
+        example: 'Visa Cashback Oro'
+      moneda:
+        type: string
+        example: '001'
+      monto:
+        type: string
+        example: '25000'
+      tasaInteresAnual:
+        type: integer
+        example: 12.9
+        format: int32
+    description: Contenido de una campaña de tarjeta de crédito
+  CampaniaPrestamos:
     type: object
     properties:
       codigoUnicoCliente:
@@ -65,21 +88,30 @@ definitions:
         type: string
         example: '25000'
       tasaInteresAnual:
-        type: integer
-        example: 12.9
-        format: int32
+        type: string
+        example: 23.5
       plazoMaximo:
-        type: integer
-        format: int32
-        example: '12'
+        type: string
+        example: 12
+    description: Contenido de una campaña de prestamos
+  ClienteCampanias:
+    type: object
+    properties:
+      tarjetas:
+        type: array
+        items:
+          $ref: '#/definitions/CampaniaTarjeta'
+      prestamos:
+        type: array
+        items:
+          $ref: '#/definitions/CampaniaPrestamos'
+    description: Lista de Campañas de un cliente
+  CrearCampaniaResponse:
+    type: object
+    properties:
       codigoCampania:
         type: string
-        example: VEH-1232
-      nombreProducto:
-        type: string
-        example: CREDITO VEHICULAR
-    additionalProperties: false
-    description: Contenido de una campaña de tarjeta de crédito
+        example: '7856745687'
 x-ibm-configuration:
   enforced: true
   testable: true

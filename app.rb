@@ -250,8 +250,8 @@ post '/campanias/tarjetas' do
     halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     campania = Campania.new
     campania.codigo_unico_cliente = payload['codigoUnicoCliente']
+    campania.nombre_producto = Campania::TARJETA
     payload['codigoCampania'] = rand.to_s[2..11]
-    payload['nombreProducto'] = "TARJETA DE CREDITO"
     campania.json = payload.to_json
     campania.save
 
@@ -264,8 +264,8 @@ post '/campanias/prestamos' do
     halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     campania = Campania.new
     campania.codigo_unico_cliente = payload['codigoUnicoCliente']
+    campania.nombre_producto = Campania::PRESTAMO
     payload['codigoCampania'] = rand.to_s[2..11]
-    payload['nombreProducto'] = "PRESTAMO EFECTIVO"
     campania.json = payload.to_json
     campania.save
 
@@ -273,10 +273,15 @@ post '/campanias/prestamos' do
 end
 
 get '/clientes/:codigoUnicoCliente/campanias' do
-    campanias = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'])
-    hash = campanias.map { |c| 
-        campania=JSON.parse(c.json)
-        campania
+    tarjetas = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'],nombre_producto: Campania::TARJETA)
+    prestamos = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'],nombre_producto: Campania::PRESTAMO)
+    tarjetas_hash = tarjetas.map { |c| 
+        tarjeta=JSON.parse(c.json)
+        tarjeta
     }
-    return hash.to_json
+    prestamos_hash = prestamos.map { |c| 
+        prestamo=JSON.parse(c.json)
+        prestamo
+    }
+    return {:tarjetas=>tarjetas_hash,:prestamos=>prestamos_hash}.to_json
 end

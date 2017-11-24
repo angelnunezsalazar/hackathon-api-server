@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171117081623) do
+ActiveRecord::Schema.define(version: 20171124183412) do
 
   create_table "campanias", force: :cascade do |t|
     t.string "codigo_unico_cliente"
+    t.string "nombre_producto"
     t.string "json"
   end
 
@@ -39,7 +40,6 @@ ActiveRecord::Schema.define(version: 20171117081623) do
   create_table "reclamos", force: :cascade do |t|
     t.string "codigo_unico_cliente"
     t.string "numero_reclamo"
-    t.string "estado"
     t.string "json"
   end
 

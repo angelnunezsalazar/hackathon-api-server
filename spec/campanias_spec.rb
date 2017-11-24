@@ -14,7 +14,7 @@ describe 'API Campañias' do
             request["codigoUnicoCliente"] = codigo_unico_cliente
             post "/campanias/tarjetas", request
             get "/clientes/#{request["codigoUnicoCliente"]}/campanias"
-            expect(json_body.length).to eql(2)
+            expect(json_body[:tarjetas].length).to eql(2)
         end
 
         it 'retorna numero de operacion' do
@@ -48,7 +48,7 @@ describe 'API Campañias' do
             request["codigoUnicoCliente"] = codigo_unico_cliente
             post "/campanias/prestamos", request
             get "/clientes/#{request["codigoUnicoCliente"]}/campanias"
-            expect(json_body.length).to eql(2)
+            expect(json_body[:prestamos].length).to eql(2)
         end
 
         it 'retorna numero de operacion' do
@@ -81,11 +81,10 @@ describe 'API Campañias' do
             request = JSON.parse(File.read('payloads/crearcampañaprestamo_request.json'))
             request["codigoUnicoCliente"] = codigo_unico_cliente
             post "/campanias/prestamos", request
-            get "/clientes/#{request["codigoUnicoCliente"]}/campanias"
-            expect(json_body.length).to eql(2)
+            get "/clientes/#{codigo_unico_cliente}/campanias"
+            expect(json_body[:tarjetas].length).to eql(1)
+            expect(json_body[:prestamos].length).to eql(1)
         end
     end
-
-
 end
 
