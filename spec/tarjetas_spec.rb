@@ -2,6 +2,8 @@ require 'airborne'
 
 describe 'API AltaTarjeta' do
   it 'crea una tarjeta y retorna el numero de tarjeta' do
+    request = JSON.parse(File.read('payloads/crearcliente_request.json'))
+    request["numeroDocumento"]=rand.to_s[2..9]
     request = JSON.parse(File.read('payloads/altatarjeta_request.json'))
     post '/tarjetas', request
     expect_json_keys([:numeroCuenta])

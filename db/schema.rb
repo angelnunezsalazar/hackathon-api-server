@@ -12,6 +12,11 @@
 
 ActiveRecord::Schema.define(version: 20171117081623) do
 
+  create_table "campanias", force: :cascade do |t|
+    t.string "codigo_unico_cliente"
+    t.string "json"
+  end
+
   create_table "clientes", force: :cascade do |t|
     t.string "numero_documento"
     t.string "codigo_unico"

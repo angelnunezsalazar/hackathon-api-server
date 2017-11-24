@@ -243,3 +243,26 @@ post '/calificacion' do
              :codigoEvaluacion => rand.to_s[1..10],
              :message => "Cliente cumple la calificación" }.to_json
 end
+
+post '/campanias/tarjetas' do
+    payload = JSON.parse(request.body.read)
+    cliente = Cliente.find_by(codigo_unico: payload['codigoUnicoCliente'])
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
+    campania = Campania.new
+    campania.codigo_unico_cliente = payload['codigoUnicoCliente']
+    payload['codigoCampania'] = rand.to_s[1..10]
+    payload['nombreProducto'] = "TARJETA DE CREDITO"
+    campania.json = payload.to_json
+    campania.save
+
+    return {:codigoCampania => payload['codigoCampania']}.to_json
+end
+
+get '/clientes/:codigoUnicoCliente/campanias' do
+    campanias = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    hash = campanias.map { |c| 
+        campania=JSON.parse(c.json)
+        campania
+    }
+    return hash.to_json
+end
