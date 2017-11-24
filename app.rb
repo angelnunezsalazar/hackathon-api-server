@@ -250,8 +250,22 @@ post '/campanias/tarjetas' do
     halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     campania = Campania.new
     campania.codigo_unico_cliente = payload['codigoUnicoCliente']
-    payload['codigoCampania'] = rand.to_s[1..10]
+    payload['codigoCampania'] = rand.to_s[2..11]
     payload['nombreProducto'] = "TARJETA DE CREDITO"
+    campania.json = payload.to_json
+    campania.save
+
+    return {:codigoCampania => payload['codigoCampania']}.to_json
+end
+
+post '/campanias/prestamos' do
+    payload = JSON.parse(request.body.read)
+    cliente = Cliente.find_by(codigo_unico: payload['codigoUnicoCliente'])
+    halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
+    campania = Campania.new
+    campania.codigo_unico_cliente = payload['codigoUnicoCliente']
+    payload['codigoCampania'] = rand.to_s[2..11]
+    payload['nombreProducto'] = "PRESTAMO EFECTIVO"
     campania.json = payload.to_json
     campania.save
 
