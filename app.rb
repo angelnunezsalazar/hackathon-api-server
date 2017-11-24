@@ -273,7 +273,7 @@ post '/campanias/prestamos' do
 end
 
 get '/clientes/:codigoUnicoCliente/campanias' do
-    campanias = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    campanias = Campania.find_by(codigo_unico_cliente: params['codigoUnicoCliente'])
     hash = campanias.map { |c| 
         campania=JSON.parse(c.json)
         campania
