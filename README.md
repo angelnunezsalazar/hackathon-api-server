@@ -51,7 +51,7 @@ Postgresql
 ------------------
 Conectarse
 
-	$ heroku pg:psql
+	$ heroku pg:psql --app hackathon-api-server
 
 Consultar todas las tablas
 

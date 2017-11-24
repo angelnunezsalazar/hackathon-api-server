@@ -77,7 +77,7 @@ describe 'API Campañias' do
             codigo_unico_cliente = json_body[:codigoUnicoCliente]
             request = JSON.parse(File.read('payloads/crearcampañatc_request.json'))
             request["codigoUnicoCliente"] = codigo_unico_cliente
-            post "/campanias/prestamos", request
+            post "/campanias/tarjetas", request
             request = JSON.parse(File.read('payloads/crearcampañaprestamo_request.json'))
             request["codigoUnicoCliente"] = codigo_unico_cliente
             post "/campanias/prestamos", request

@@ -7,35 +7,9 @@ info:
 host: consultarcampania-UAT.interbankclouduat.pe
 basePath: /ms
 paths:
-  /consultarcampania:
-    get:
-      responses:
-        '200':
-          description: 'Conexion exitosa / Error tipo 01: Contraseña incorrecta en la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error tipo 05: No se ingresa un dato obligatorio o formato incorrecto.'
-          schema:
-            $ref: '#/definitions/Campania'
-        '401':
-          description: Acceso no autorizado
-        '404':
-          description: Ruta no encontrada
-        '500':
-          description: Error interno del servicio. Favor intente luego
-  '/cliente/{codigoUnicoCliente}/campanias':
-    get:
-      responses:
-        '200':
-          description: 200 OK
-          schema:
-            $ref: '#/definitions/Campania'
-      parameters:
-        - name: codigoUnicoCliente
-          type: string
-          required: true
-          in: path
-          description: Código único del cliente
   /campania/tarjetas:
     post:
-      summary: Registra una campania de tarjeta para un cliente.
+      summary: Registra una campaña de tarjeta para un cliente.
       parameters:
         - in: body
           name: request
@@ -50,7 +24,7 @@ paths:
             type: object
   /campania/prestamos:
     post:
-      summary: Registra una campania de préstamo para un cliente.
+      summary: Registra una campaña de préstamo para un cliente.
       parameters:
         - in: body
           name: request
@@ -63,6 +37,20 @@ paths:
           description: Operación Exitosa
           schema:
             type: object
+  '/cliente/{codigoUnicoCliente}/campanias':
+    get:
+      summary: Registra una campaña de préstamo para un cliente.
+      parameters:
+        - name: codigoUnicoCliente
+          type: string
+          required: true
+          in: path
+          description: Código único del cliente
+      responses:
+        '200':
+          description: 200 OK
+          schema:
+            $ref: '#/definitions/Campania'
 definitions:
   Campania:
     type: object
@@ -91,7 +79,7 @@ definitions:
         type: string
         example: CREDITO VEHICULAR
     additionalProperties: false
-    description: Contenido de la campaña para un cliente
+    description: Contenido de una campaña de tarjeta de crédito
 x-ibm-configuration:
   enforced: true
   testable: true
