@@ -14,11 +14,11 @@ basePath: /ms
 paths:
   /pasecuotas:
     post:
+      summary: Genera el pase a cuotas de un movimiento de una tarjeta de crédito.
       parameters:
         - in: body
           name: request
           required: true
-          description: Ejecuta un pase a cuotas de un movimiento y devuelve el próximo pago a realizar.
           schema:
             $ref: '#/definitions/PaseCuotasRequest'
       responses:
@@ -26,19 +26,13 @@ paths:
           description: Pase a cuotas exitoso.
           schema:
             $ref: '#/definitions/PaseCuotasResponse'
-        '401':
-          description: Acceso no autorizado
-        '404':
-          description: Tarjeta no encontrada
-        '500':
-          description: Error interno del servicio. Favor intente luego
   /pasecuotas/simulacion:
     post:
+      summary: Permite la simulación de un pase cuotas retornando el monto por cuota y la próxima fecha de pago .
       parameters:
         - in: body
           name: request
           required: true
-          description: Simula y calcula las cuotas y el próximo pago a realizar.
           schema:
             $ref: '#/definitions/SimulacionCuotasRequest'
       responses:
@@ -48,6 +42,7 @@ paths:
             $ref: '#/definitions/SimulacionCuotaResponse'
   '/pasecuotas/{numeroTarjeta}/cuotas':
     get:
+      summary: Retorna las cuotas generadas que están asociadas a una tarjeta de crédito.
       parameters:
         - name: numeroTarjeta
           in: path

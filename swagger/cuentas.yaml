@@ -29,7 +29,7 @@ paths:
             $ref: '#/definitions/CrearCuentaResponse'
   '/cuentas/{numeroCuenta}':
     get:
-      summary: "Retorna los datos de una cuenta'."
+      summary: "Retorna los datos de una cuenta."
       parameters:
         - name: numeroCuenta
           in: path

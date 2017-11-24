@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API Campaña
+  title: API Campañas
   description: "Permite listar y crear campañas para un cliente con código único.\n<strong>Ejemplo de uso:</strong> Usamos esta API para que el cliente tenga campañas pre-aprobadas, por ejemplo : Tarjeta, puede ingresar al flujo de venta tarjeta digital . Esta funcionalidad tambien se usa en un bot de Interbank.\n<strong>Parametros Entrada:</strong> Código único de cliente e información de la campaña a crear. \n<strong>Parametros Salida:</strong>Datos de la campaña"
   version: 1.0.0
   x-ibm-name: ms-consultarcampania
@@ -123,21 +123,6 @@ x-ibm-configuration:
       - operation-switch:
           title: operation-switch
           case:
-            - operations:
-                - verb: get
-                  path: /consultarcampania
-              execute:
-                - set-variable:
-                    title: set-variable
-                    actions:
-                      - set: message.body
-                        value: '[{"codigoUnicoCliente":"0027641514","marcaTipo":"054","descripcionTipoTarjeta":"Visa Cashback Oro","moneda":"001","monto":"5000","tasaInteresAnual":"23.5","codigoCampania":".937103590","nombreProducto":"PRESTAMO EFECTIVO"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"5000","tasaInteresAnual":"23.5","plazoMaximo":"12","codigoCampania":".738742491","nombreProducto":"PRESTAMO EFECTIVO"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"15000","tasaInteresAnual":"17.5","plazoMaximo":"24","codigoCampania":"1233431","nombreProducto":"CREDITO VEHICULAR"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"7000","tasaInteresAnual":"58.0","plazoMaximo":"12","codigoCampania":"1233433","nombreProducto":"TARJETA DORADA"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"20000","tasaInteresAnual":"45.0","plazoMaximo":"12","codigoCampania":"12334344","nombreProducto":"TARJETA BLACK"}]'
-                      - set: message.headers.content-type
-                        value: application/json
-                      - set: message.status.code
-                        value: '200'
-                    version: 1.0.0
-                    description: Dummy
             - operations:
                 - verb: get
                   path: '/cliente/{codigoUnicoCliente}/campanias'

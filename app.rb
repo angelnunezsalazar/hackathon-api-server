@@ -228,7 +228,7 @@ end
 post '/calificacion' do
     payload = JSON.parse(request.body.read)
 
-    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987
+    clienteOK = payload['solicitante']['fechaNacimiento'].to_s[0..3].to_i <= 1987
 #    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987 && payload['fechaNacimiento']=='CASADO'
 #    campaniasOK = payload['indicadorAval']=='S' || payload['indicadorCompraDeuda']=='S' || payload['indicadorAmpliacionLinea']=='S'
 
