@@ -274,6 +274,7 @@ end
 
 get '/clientes/:codigoUnicoCliente/campanias' do
     campanias = Campania.find_by(codigo_unico_cliente: params['codigoUnicoCliente'])
+    halt 404, { :message => "Cliente no tiene campañas asignadas" }.to_json unless campanias.present?
     hash = campanias.map { |c| 
         campania=JSON.parse(c.json)
         campania
