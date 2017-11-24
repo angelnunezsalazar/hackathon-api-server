@@ -228,16 +228,13 @@ end
 post '/calificacion' do
     payload = JSON.parse(request.body.read)
 
-    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987 && payload['fechaNacimiento']=='CASADO'
-    campaniasOK = payload['indicadorAval']=='S' || payload['indicadorCompraDeuda']=='S' || payload['indicadorAmpliacionLinea']=='S'
+    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987
+#    clienteOK = payload['fechaNacimiento'].to_s[0..3].to_i > 1987 && payload['fechaNacimiento']=='CASADO'
+#    campaniasOK = payload['indicadorAval']=='S' || payload['indicadorCompraDeuda']=='S' || payload['indicadorAmpliacionLinea']=='S'
 
-#    halt 200, { :codigoResultado => "2",
-#                :codigoEvaluacion => rand.to_s[1..10],
-#                :message => "Cliente no cumple caracteristicas no existe" }.to_json
-#unless  no clienteOK || no (clienteOK && campaniasOK)
-
-#    requiereAval = payload['montoProducto'] == 'S'
-#    ventaOK = payload['montoProducto'].to_i % 2 > payload['montoCreditoCampana'].to_i
+    halt 404, { :codigoResultado => "2",
+                :codigoEvaluacion => rand.to_s[1..10],
+                :message => "Cliente no cumple caracteristicas" }.to_json unless clienteOK
 
     return { :codigoResultado => "0",
              :codigoEvaluacion => rand.to_s[1..10],
@@ -250,8 +247,8 @@ post '/campanias/tarjetas' do
     halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     campania = Campania.new
     campania.codigo_unico_cliente = payload['codigoUnicoCliente']
-    campania.nombre_producto = Campania::TARJETA
     payload['codigoCampania'] = rand.to_s[2..11]
+    payload['nombreProducto'] = "TARJETA DE CREDITO"
     campania.json = payload.to_json
     campania.save
 
@@ -264,8 +261,8 @@ post '/campanias/prestamos' do
     halt 404, { :message => "Cliente no existe" }.to_json unless cliente.present?
     campania = Campania.new
     campania.codigo_unico_cliente = payload['codigoUnicoCliente']
-    campania.nombre_producto = Campania::PRESTAMO
     payload['codigoCampania'] = rand.to_s[2..11]
+    payload['nombreProducto'] = "PRESTAMO EFECTIVO"
     campania.json = payload.to_json
     campania.save
 
@@ -273,15 +270,10 @@ post '/campanias/prestamos' do
 end
 
 get '/clientes/:codigoUnicoCliente/campanias' do
-    tarjetas = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'],nombre_producto: Campania::TARJETA)
-    prestamos = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'],nombre_producto: Campania::PRESTAMO)
-    tarjetas_hash = tarjetas.map { |c| 
-        tarjeta=JSON.parse(c.json)
-        tarjeta
+    campanias = Campania.where(codigo_unico_cliente: params['codigoUnicoCliente'])
+    hash = campanias.map { |c| 
+        campania=JSON.parse(c.json)
+        campania
     }
-    prestamos_hash = prestamos.map { |c| 
-        prestamo=JSON.parse(c.json)
-        prestamo
-    }
-    return {:tarjetas=>tarjetas_hash,:prestamos=>prestamos_hash}.to_json
+    return hash.to_json
 end
