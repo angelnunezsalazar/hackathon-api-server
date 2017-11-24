@@ -32,4 +32,13 @@
     "plazoMaximo": "12",
     "codigoCampania": "1233433",
     "nombreProducto": "TARJETA DORADA"
+},
+{
+    "codigoUnicoCliente": "0027641514",
+    "moneda": "001",
+    "monto": "20000",
+    "tasaInteresAnual": "45.0",
+    "plazoMaximo": "12",
+    "codigoCampania": "12334344",
+    "nombreProducto": "TARJETA BLACK"
 }]

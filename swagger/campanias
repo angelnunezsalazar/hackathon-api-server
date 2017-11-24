@@ -1,0 +1,159 @@
+swagger: '2.0'
+info:
+  title: API Consultar Campaña
+  description: "Permite listar y crear campañas para un cliente con código único.\n<strong>Ejemplo de uso:</strong> Usamos esta API para que el cliente tenga campañas pre-aprobadas, por ejemplo : Tarjeta, puede ingresar al flujo de venta tarjeta digital . Esta funcionalidad tambien se usa en un bot de Interbank.\n<strong>Parametros Entrada:</strong> Código único de cliente e información de la campaña a crear. \n<strong>Parametros Salida:</strong>Datos de la campaña"
+  version: 1.0.0
+  x-ibm-name: ms-consultarcampania
+host: consultarcampania-UAT.interbankclouduat.pe
+basePath: /ms
+paths:
+  /consultarcampania:
+    get:
+      responses:
+        '200':
+          description: 'Conexion exitosa / Error tipo 01: Contraseña incorrecta en la credencial del MS./ Error tipo 02: No se ingresa un dato obligatorio o formato incorrecto. / Error tipo 03: Cambio de Puerto del MS en el Docker./Error tipo 04: Cuando el bus a codificado algo mal en el servicio./Error tipo 05: No se ingresa un dato obligatorio o formato incorrecto.'
+          schema:
+            $ref: '#/definitions/Campania'
+        '401':
+          description: Acceso no autorizado
+        '404':
+          description: Ruta no encontrada
+        '500':
+          description: Error interno del servicio. Favor intente luego
+  '/cliente/{codigoUnicoCliente}/campanias':
+    get:
+      responses:
+        '200':
+          description: 200 OK
+          schema:
+            $ref: '#/definitions/Campania'
+      parameters:
+        - name: codigoUnicoCliente
+          type: string
+          required: true
+          in: path
+          description: Código único del cliente
+  /campania/tarjetas:
+    post:
+      summary: Registra una campania de tarjeta para un cliente.
+      parameters:
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/Campania'
+          description: Información de la campaña para cambio de tarjeta de crédito
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            type: object
+  /campania/prestamos:
+    post:
+      summary: Registra una campania de préstamo para un cliente.
+      parameters:
+        - in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/Campania'
+          description: Información de la campaña para el préstamo
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            type: object
+definitions:
+  Campania:
+    type: object
+    properties:
+      codigoUnicoCliente:
+        type: string
+        example: '123456789213'
+      moneda:
+        type: string
+        example: '001'
+      monto:
+        type: string
+        example: '25000'
+      tasaInteresAnual:
+        type: integer
+        example: 12.9
+        format: int32
+      plazoMaximo:
+        type: integer
+        format: int32
+        example: '12'
+      codigoCampania:
+        type: string
+        example: VEH-1232
+      nombreProducto:
+        type: string
+        example: CREDITO VEHICULAR
+    additionalProperties: false
+    description: Contenido de la campaña para un cliente
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: get
+                  path: /consultarcampania
+              execute:
+                - set-variable:
+                    title: set-variable
+                    actions:
+                      - set: message.body
+                        value: '[{"codigoUnicoCliente":"0027641514","marcaTipo":"054","descripcionTipoTarjeta":"Visa Cashback Oro","moneda":"001","monto":"5000","tasaInteresAnual":"23.5","codigoCampania":".937103590","nombreProducto":"PRESTAMO EFECTIVO"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"5000","tasaInteresAnual":"23.5","plazoMaximo":"12","codigoCampania":".738742491","nombreProducto":"PRESTAMO EFECTIVO"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"15000","tasaInteresAnual":"17.5","plazoMaximo":"24","codigoCampania":"1233431","nombreProducto":"CREDITO VEHICULAR"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"7000","tasaInteresAnual":"58.0","plazoMaximo":"12","codigoCampania":"1233433","nombreProducto":"TARJETA DORADA"},{"codigoUnicoCliente":"0027641514","moneda":"001","monto":"20000","tasaInteresAnual":"45.0","plazoMaximo":"12","codigoCampania":"12334344","nombreProducto":"TARJETA BLACK"}]'
+                      - set: message.headers.content-type
+                        value: application/json
+                      - set: message.status.code
+                        value: '200'
+                    version: 1.0.0
+                    description: Dummy
+            - operations:
+                - verb: get
+                  path: '/cliente/{codigoUnicoCliente}/campanias'
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/:codigoUnicoCliente/campanias'
+            - operations:
+                - verb: post
+                  path: /campania/tarjetas
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/campanias/tarjetas'
+            - operations:
+                - verb: post
+                  path: /campania/prestamos
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    target-url: 'https://hackathon-api-server.herokuapp.com/campanias/prestamos'
+          otherwise: []
+          version: 1.0.0
+    catch: []

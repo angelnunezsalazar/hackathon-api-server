@@ -241,7 +241,7 @@ post '/calificacion' do
 
     return { :codigoResultado => "0",
              :codigoEvaluacion => rand.to_s[1..10],
-             :message => "Cliente cumple la calificación" }.to_json
+             :mensaje => "Cliente cumple la calificación" }.to_json
 end
 
 post '/campanias/tarjetas' do
