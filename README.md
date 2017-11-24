@@ -30,17 +30,33 @@ Actualizar BD
 
 - Ejecutar Migraciones
 
+	$ heroku run rake db:migrate --app hackathon-api-server
+
+- Reinicializar toda la BD
+
 	$ db/drop_all_tables.sh
 	$ heroku run rake db:migrate --app hackathon-api-server
 
 Logs
 -----------------
-- Ver los logs
+- Logs de la aplicación
 
 	$ heroku logs --app hackathon-api-server
 
+- Logs de la BD
+
+	$ heroku logs --tail --ps postgres --app hackathon-api-server
+
 Postgresql
 ------------------
+Conectarse
+
+	$ heroku pg:psql
+
 Consultar todas las tablas
 
-	"SELECT table_name FROM information_schema.tables WHERE table_schema='public'"
+	$ SELECT table_name FROM information_schema.tables WHERE table_schema='public';
+
+Consultar todas las columnas de una tabla
+
+	$ select column_name from information_schema.columns where table_name = 'TABLA';
