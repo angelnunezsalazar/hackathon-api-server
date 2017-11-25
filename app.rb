@@ -3,6 +3,10 @@ require 'sinatra/activerecord'
 require './config/environments'
 Dir[File.join(File.dirname(__FILE__), 'model', '*.rb')].each {|file| require file }
 
+before do
+    content_type :json
+end
+
 get '/' do
     return "Hackathon API Server running!"
 end
