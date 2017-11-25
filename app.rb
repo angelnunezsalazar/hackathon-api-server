@@ -70,8 +70,10 @@ end
 post '/transferencia' do
     payload = JSON.parse(request.body.read)
     cuenta_cargo = Cuenta.find_by(numero_cuenta: payload['numeroCuentaCargo'])
+    halt 404, { :message => "Cuenta Cargo no existe" }.to_json unless cuenta_cargo.present?
     cuenta_cargo.saldo = cuenta_cargo.saldo - payload['importeCargo'].to_f
     cuenta_abono = Cuenta.find_by(numero_cuenta: payload['numeroCuentaAbono'])
+    halt 404, { :message => "Cuenta Abono no existe" }.to_json unless cuenta_abono.present?
     cuenta_abono.saldo=cuenta_abono.saldo + payload['importeAbono'].to_f
     cuenta_cargo.transaction do
         cuenta_cargo.save
@@ -161,12 +163,6 @@ end
 post '/tarjetas/:numeroTarjeta/abonos' do
     payload = JSON.parse(request.body.read)
     tarjeta_abono = Tarjeta.find_by(numero_tarjeta: params[:numeroTarjeta])
-    puts "tarjeta abono"
-    puts tarjeta_abono
-    puts "payload"
-    payload
-    puts "params"
-    puts params['numeroTarjeta']
     halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta_abono.present?
     tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_f
     tarjeta_abono.save

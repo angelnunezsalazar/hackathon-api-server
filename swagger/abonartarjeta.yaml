@@ -11,7 +11,7 @@ info:
 host: abonotarjetapremia-UAT.interbankclouduat.pe
 basePath: /ms
 paths:
-  '/tarjeta/{numeroTarjeta}/abonos':
+  '/tarjetas/{numeroTarjeta}/abonos':
     post:
       summary: Abona el monto indicado a la tarjeta de crédito
       parameters:
