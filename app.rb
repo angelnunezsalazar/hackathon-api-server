@@ -161,6 +161,12 @@ end
 post '/tarjetas/:numeroTarjeta/abonos' do
     payload = JSON.parse(request.body.read)
     tarjeta_abono = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
+    puts "tarjeta abono"
+    puts tarjeta_abono
+    puts "payload"
+    payload
+    puts "params"
+    puts params['numeroTarjeta']
     halt 404, { :message => "Tarjeta no existe" }.to_json unless tarjeta_abono.present?
     tarjeta_abono.saldo=tarjeta_abono.saldo + payload['importeAbono'].to_f
     tarjeta_abono.save

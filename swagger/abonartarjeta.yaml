@@ -13,12 +13,7 @@ basePath: /ms
 paths:
   '/tarjeta/{numeroTarjeta}/abonos':
     post:
-      summary: ''
-      responses:
-        '200':
-          description: Operación Exitosa
-          schema:
-            $ref: '#/definitions/AbonarTarjetaResponse'
+      summary: Abona el monto indicado a la tarjeta de crédito
       parameters:
         - name: numeroTarjeta
           type: string
@@ -31,7 +26,11 @@ paths:
           schema:
             $ref: '#/definitions/AbonarTarjeta'
           description: Detalle del abono a realizar
-      description: Abona el monto indicado a la tarjeta de crédito
+      responses:
+        '200':
+          description: Operación Exitosa
+          schema:
+            $ref: '#/definitions/AbonarTarjetaResponse'
 definitions:
   AbonarTarjeta:
     type: object
@@ -48,9 +47,12 @@ definitions:
   AbonarTarjetaResponse:
     type: object
     properties:
-      respuesta:
+      numOperacion:
+        type: number
+        example: '2746583561'
+      saldoTarjetaAbono:
         type: string
-        example: Abono exitoso
+        example: '120.00'
 x-ibm-configuration:
   enforced: true
   testable: true
@@ -59,14 +61,25 @@ x-ibm-configuration:
     enabled: true
   assembly:
     execute:
-      - proxy:
-          title: proxy
-          timeout: 60
-          verb: keep
-          cache-response: protocol
-          cache-ttl: 900
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: post
+                  path: /tarjetas/{numeroTarjeta}/abonos
+              execute:
+                - proxy:
+                    title: proxy
+                    timeout: 60
+                    verb: keep
+                    cache-response: protocol
+                    cache-ttl: 900
+                    version: 1.0.0
+                    description: Service
+                    target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas/{numeroTarjeta}/abonos'
+          otherwise: []
           version: 1.0.0
-          target-url: 'https://hackathon-api-server.herokuapp.com/tarjetas/{numeroTarjeta}/abono'
+    catch: []
 securityDefinitions:
   SecureID:
     type: apiKey
