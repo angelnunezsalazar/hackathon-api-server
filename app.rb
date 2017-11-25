@@ -160,7 +160,7 @@ end
 
 post '/tarjetas/:numeroTarjeta/abonos' do
     payload = JSON.parse(request.body.read)
-    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: params['numeroTarjeta'])
+    tarjeta_abono = Tarjeta.find_by(numero_tarjeta: params[:numeroTarjeta])
     puts "tarjeta abono"
     puts tarjeta_abono
     puts "payload"
