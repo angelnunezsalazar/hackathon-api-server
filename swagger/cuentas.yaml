@@ -15,7 +15,7 @@ basePath: /ms
 paths:
   /cuentas:
     post:
-      summary: Registrar una nueva cuenta
+      summary: Registra una nueva cuenta.
       parameters:
         - in: body
           name: request

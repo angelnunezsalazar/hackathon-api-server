@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API FichaReclamo
+  title: API Ficha Reclamo
   description:  |-
     Permite gestionar reclamos en el Sistema de Telesoft, este documento es la evidencia de una solicitud 
     y/o reclamo de un cliente del banco. 

@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API AbonarTarjeta
+  title: API Abonar Tarjeta
   description: |-
     API que realiza el abono a una tarjeta del cliente. Este abono se verá reflejado en el saldo disponible de la tarjeta.
     <strong>Ejemplo de uso:</strong> Se utiliza este API para devolver el monto consumido en la tarjeta de crédito, los clientes pueden reclamar por un movimiento no reconocido, se aplica realizando un abono a su tarjeta con el monto de devolución.

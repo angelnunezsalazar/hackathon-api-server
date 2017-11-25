@@ -134,7 +134,7 @@ x-ibm-configuration:
                     cache-response: protocol
                     cache-ttl: 900
                     version: 1.0.0
-                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/:codigoUnicoCliente/campanias'
+                    target-url: 'https://hackathon-api-server.herokuapp.com/clientes/{codigoUnicoCliente}/campanias'
             - operations:
                 - verb: post
                   path: /campania/tarjetas
