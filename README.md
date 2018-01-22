@@ -60,3 +60,25 @@ Consultar todas las tablas
 Consultar todas las columnas de una tabla
 
 	$ select column_name from information_schema.columns where table_name = 'TABLA';
+
+Postgresql Upgrate Heroku
+--------------------------
+Info de las BD
+
+	$ heroku pg:info --app hackathon-api-server
+
+Mantenimiento
+
+	$ heroku maintenance:on --app hackathon-api-server
+
+Copiar Data
+
+	$ heroku pg:copy DATABASE_URL HEROKU_POSTGRESQL_GRAY_URL --app hackathon-api-server --confirm hackathon-api-server
+
+Promover
+
+	$ heroku pg:promote HEROKU_POSTGRESQL_GRAY_URL --app hackathon-api-server
+
+Exit Mantenimiento
+
+	$ heroku maintenance:off --app hackathon-api-server
